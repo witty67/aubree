@@ -23,15 +23,14 @@ print api.run_experiment(qasm, device='simulator', shots=1024, name=None, timeou
                               
                                (write-to-machine (append-program output-program))
                                (set! output-program "")))
-    ((list? expr) (begin (display "It's a program folks\n")
-                         ((lambda (input-program)
-                            ;;(display (length input-program))
-                            (display input-program)
-                            (display (null? input-program))
-                            (cond
-                              ((null? input-program) (display "program is finished\n"))
-                                            (else
-                                            (eval-list input-program))))input-program)))
+    ((list? expr) (let eval-program ((list-expr expr))
+                              (display list-expr)                
+                             (cond
+                               ((null? list-expr) '())
+                               ((atom? (cadr list-expr)) (eval-list list-expr))
+                               (else
+                                ;;(display (flatten (cdr list-expr)))
+                               (eval-list (flatten (cdr list-expr)))))))
                                
     (else (cond
             ((number? expr) (begin
@@ -117,3 +116,6 @@ qasm = 'OPENQASM 2.0;\\n\\ninclude \"qelib1.inc\";\\n")
 
 (define (comma-newline expr)
     (string-append expr ";\\n"))
+
+(define (atom? n)
+  (and (not (null? n)) (not (pair? n))))
