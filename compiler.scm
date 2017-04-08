@@ -12,10 +12,9 @@ print api.run_experiment(qasm, device='simulator', shots=1024, name=None, timeou
 (define (compile expr)
   (cond
 
-    ((equal? expr 'run) (begin (display "End of program definition.\nRun \"python machine.py\" to execute you program\n"))
+    ((equal? expr 'run) (begin (display "End of program definition.\nRun \"python machine.py\" to execute you program\n")))
                                
-    (else (display "Nothing was here\n")))
-  expr)
+    (else (display "Nothing was here\n"))))
 
 (define (quantum-repl)
   (display "=>")
