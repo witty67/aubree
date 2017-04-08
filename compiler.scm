@@ -5,7 +5,7 @@
 api = IBMQuantumExperience (\"c413835f96f5c9ce144faa39b7cab48d9f7b06cdaa7a5c00f2da33b3c56dbf453680ae1e9fa47cf58329404ab9ba7b8a7f2b85d961a0d4dac5ff2220e42272d1\")
 qasm = 'OPENQASM 2.0;\\n\\ninclude \"qelib1.inc\";\\nqreg q[5];\\ncreg c[5];\\nh q[0];\\ncx q[0],q[2];\\nmeasure q[0] -> c[0];\\nmeasure q[2] -> c[1];\\n'
 print api.run_experiment(qasm, device='simulator', shots=1024, name=None, timeout=60)")
-(define init-register "qreg q[5];\\ncreg c[5];\\n")
+(define init-register "nqreg q[5];\\ncreg c[5];\\nh q[0];\\n")
 
 
 (define prototype "qreg q[5];\\ncreg c[5];\\nh q[0];\\ncx q[0],q[2];\\nmeasure q[0] -> c[0];\\nmeasure q[2] -> c[1];\\n'")
@@ -13,6 +13,7 @@ print api.run_experiment(qasm, device='simulator', shots=1024, name=None, timeou
 ;; Takes an aubree expression and spits out openqasm 2.0 program as a string
 (define (compile expr)
   (let ((input-program expr))
+    
   (cond
     ((equal? expr 'quit) (raise-syntax-error 'Q "You quit\n"))
     ((eq? (string-length output-program) 0) (begin (display "Enter the number of quantum followed by the number of classical registers you want. Eg  => 5 5\n")
@@ -22,8 +23,14 @@ print api.run_experiment(qasm, device='simulator', shots=1024, name=None, timeou
                                (write-to-machine (append-program output-program))
                                (set! output-program "")))
     ((list? expr) (begin (display "It's a program folks\n")
-                         ((lambda ()
-                           (display (* 2 2 ))))))
+                         ((lambda (input-program)
+                            ;;(display (length input-program))
+                            (display input-program)
+                            (display (null? input-program))
+                            (cond
+                              ((null? input-program) (display "program is finished\n"))
+                                            (else
+                                            (eval-list input-program))))input-program)))
                                
     (else (cond
             ((number? expr) (begin
@@ -34,6 +41,17 @@ print api.run_experiment(qasm, device='simulator', shots=1024, name=None, timeou
 
 
             (else (set! output-program (string-append input-program output-program ))))))))
+
+
+;;Takes one expression and writes it to the output program
+(define (eval-list expr)
+  (let ((gate (car expr)))
+    (cond
+      ((eq? gate 'h) (set! output-program (comma-newline (string-join (string-replace "h q[x]" "x" (number->string (cadr expr)))output-program))))
+      (else
+       (display "Not valid\n")))
+    gate))
+    
 
 ;;Append program to the boilerplate that should be run into the API          
 (define (append-program source)
