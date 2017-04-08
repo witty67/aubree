@@ -46,7 +46,8 @@ print api.run_experiment(qasm, device='simulator', shots=1024, name=None, timeou
 
 ;;Takes one expression and writes it to the output program
 (define (eval-list expr)
-  (let ((gate (car expr)))
+  (let ((gate (car expr))
+        (temp-list " "))
     (cond
       ((eq? gate 'h) (set! output-program (comma-newline (string-join (string-replace "h q[x]" "x" (number->string (cadr expr)))output-program))))
       ((eq? gate 'id) (set! output-program (comma-newline (string-join (string-replace "id q[x]" "x" (number->string (cadr expr)))output-program))))
@@ -59,6 +60,18 @@ print api.run_experiment(qasm, device='simulator', shots=1024, name=None, timeou
       ((eq? gate 't+) (set! output-program (comma-newline (string-join (string-replace "tdg q[x]" "x" (number->string (cadr expr)))output-program))))
       ((eq? gate 'cnot) (begin (set! output-program (string-join (string-replace "cx q[y]," "y" (number->string (cadr expr)))output-program))
                                (set! output-program (comma-newline (string-join (string-replace "q[x]" "x" (number->string (caddr expr)))output-program)))))
+      ((eq? gate 'measure) (begin (set! output-program (string-join (string-replace "measure q[x] -> " "x" (number->string (cadr expr)))output-program))
+                               (set! output-program (comma-newline (string-join (string-replace "c[x]" "x" (number->string (caddr expr)))output-program)))))
+      ((eq? gate 'barrier) (begin  (set! output-program (string-join (string-replace "barrier q[x]," "x" (number->string (cadr expr)))output-program))
+                             (let build-barrier ((list-expr (cddr expr)))
+                                               
+                             (cond
+                               ((null? list-expr) '())
+                               ((null? (cdr list-expr)) (set! output-program (comma-newline (string-join (string-replace "q[x]" "x" (number->string (car list-expr)))output-program))))
+                               (else
+                               (set! output-program (string-join (string-replace "q[x]," "x" (number->string (car list-expr)))output-program))
+                               (build-barrier (cdr list-expr)))))))
+                               
                                
       
       (else
