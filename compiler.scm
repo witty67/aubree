@@ -1,3 +1,4 @@
+;;Using racket for (system... ) procedure 
 #lang racket
 ;;(define program "")
 (define cnot-test "")
@@ -14,6 +15,7 @@ print api.run_experiment(qasm, device='simulator', shots=1024, name=None, timeou
 ;; Takes an aubree expression and spits out openqasm 2.0 program as a string
 (define (compile expr)
   (let ((input-program expr))
+   
     
   (cond
     ((equal? expr 'quit) (raise-syntax-error 'Q "You quit\n"))
@@ -103,7 +105,13 @@ qasm = 'OPENQASM 2.0;\\n\\ninclude \"qelib1.inc\";\\n")
      (lambda (i)
       (display qasm i))))
 
-;;testing
+;;Outputs quantum results to file
+(define (program-output-to-file)
+   (call-with-output-file "result.txt" #:exists 'replace
+     (lambda (i)
+      (display (with-output-to-string (lambda () (system "python machine.py"))) i))))
+
+;;Testing
 (define (testing-program program)
   (if (equal? init-register program)
       (display "They match\n")
