@@ -93,11 +93,23 @@ qasm = 'OPENQASM 2.0;\\n\\ninclude \"qelib1.inc\";\\n")
 
 ;;For interactive programming
 (define (quantum-repl)
-  (compile "")
+  ;;(compile "")
   (display "=>")
-  (compile (read))
+  ;;(compile (read))
+  (qeval (read))
   (newline)
+  (display output-program)
   (quantum-repl))
+
+;; Eval function
+(define (qeval expr)
+  (let ((proglist expr))
+   (display proglist)
+  (cond
+    ((eq? (num-elements proglist) 2) (display "one element folks\n"))
+     
+    (else    
+     (qeval (cdr proglist))))))
 
 ;;Writes compiled code to machine file
 (define (write-to-machine qasm)
@@ -127,3 +139,8 @@ qasm = 'OPENQASM 2.0;\\n\\ninclude \"qelib1.inc\";\\n")
 
 (define (atom? n)
   (and (not (null? n)) (not (pair? n))))
+
+;;counts number of elemnts in list
+(define (num-elements list)
+    (if (null? list) 0
+        (+ 1 (num-elements (cdr list)))))
