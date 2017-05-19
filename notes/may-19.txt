@@ -1,0 +1,57 @@
+Execution of Quil files directly with POSIX syle with shared memory ("local execution") and execution of Quil from HTTP server requests(remote execution)
+
+Physical System -> Mathematical Formulation _> Discretization-> Model of Computation
+
+
+
+Map high-level quantum programs into effiecient falut-tolerant technology-specific implementations on differen quantum computing devices
+
+Languages, compilers, simulators, and design tools to suport the design flow
+
+Well-defined interfaces between components
+
+Effieient algorithsm for optimizing quantum programs
+
+A Software Methodology for Compiling Quantum Programs
+Application areas: Quantum Chemistry and Material Science
+ScaffCC
+
+Library interfaces
+
+Quantum Program -> Host language -> High-level Compilers -> Low-level compilers -> Layout -> Mapping to hardware
+
+Types:
+qubit
+qureg
+qunit
+qufixed
+
+Gate synthesis is the process by which any single-qubit quantum gate can be implemented to any desired precision by finding an efficient sequence of gates drawn from a discrete set of well-calibarated and error corrected gates
+
+logical layout generator and optimizer
+
+1. Assign qubit variables to logical qubits similar to how variables are assigned to registers
+
+logical qubits: Suitable for high level programming
+Physical qubits: Noisy
+Hardware qubits: Constrained to a specific quantum device chip
+
+
+Towards topological quantum computer
+anyons quantum evolutions are described by topology, they are absracted from geometric details
+This makes them more resilient to perturbations and other such things
+Topology: The study of the global properties of manifolds that are sensitive to local smooth deformations.
+
+Both a donut and a cofee cup are described by genus one manifolds: there is a single hole in both
+
+Taking a bite from the donut and chipping away at the cup will change the object locally
+
+
+Universal gate sets
+CNOT and single qubit gates
+
+
+References:
+1)http://www1.cs.columbia.edu/~aho/Talks/08-06-09_PLDI.pdf
+2)https://arxiv.org/pdf/1604.01401.pdf
+3)https://ocw.mit.edu/courses/mathematics/18-435j-quantum-computation-fall-2003/lecture-notes/qc_lec19.pdf
