@@ -1,0 +1,43 @@
+Introduction
+
+1. What is Landauer's principle?
+2.Reversible Computation: Get the input using the output.
+
+The nand is irrevesible because you cant tell what the input was based on the output you get, if you got a 1 as the output, you ususally don't know if that the input was 00 or 01. But a not gate is reversible.
+
+
+If we know the final state of the closed system, then we can easily find the initial state of that said system.
+
+NAND gates are usually irreverible
+You can't recover a unique input from the output bit. If one bit is erased by the gate, then it takes W = k T ln2 to operate the gate which is enery which means you will run out of power!
+
+The Toffoli gate is a reversible NAND gate.
+
+(a,b,c) -> (a,b,c 0+ a ^b) (3 inputs and 3 output, if the first 2 bits are set it inverts the third bit else it does nothing.
+
+To implement the nand gate to do reversible computation, Make the target automatically 1 and then that will make the output of the target the ouput of your nand and now you know the input of this nand but now you have garbage bits instead
+
+
+A qubit can be encoded by four anyons
+
+Anyons are lined up in order 1234
+
+|0> is the standard basis state and it exists when anyones 1 and 2 fuse together to get a total char of 0. 
+
+|1> is a standard basis state where anyones 1 and 2 fuse together to get a total charge of 1. Acting on the standard basis state, the braid group generator cc(counter clockwise exchange of particles 1 and 2 are represented by
+
+r = e^4pii/5 0
+
+
+while the generato clock-wise if a-< B = F^-1 * R * F
+
+To simulate n qubits, 4 n anyones are needed
+
+
+
+
+References:
+http://www.theory.caltech.edu/~preskill/ph219/topological.pdf
+http://www.theory.caltech.edu/people/preskill/ph229/notes/chap1.pdf
+
+
