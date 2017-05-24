@@ -9,6 +9,14 @@
 (defun first-pair (matrix)
   (cons (lm:matrix-elt matrix 4 1) '()))
 
-(defun move (matrix first-location final-location)
-  (setf (lm:matrix-elt matrix 3 1) 68)
-  (setf (lm:matrix-elt matrix 4 1) 20))
+(defun move (matrix first-location final-location elem)
+  (setf (lm:matrix-elt matrix (first first-location) (second first-location)) elem)
+  (setf (lm:matrix-elt matrix (first final-location) (second final-location))
+	(lm:matrix-elt matrix (first first-location) (second first-location))))
+
+(defun swap (matrix first-location second-location)
+	   (let ((tmp (lm:matrix-elt matrix (first first-location) (second first-location))))
+		 (setf (lm:matrix-elt matrix (first first-location) (second first-location))  (lm:matrix-elt matrix (first second-location) (second second-location)))
+		 (setf (lm:matrix-elt matrix (first second-location) (second second-location)) tmp)
+		 matrix))
+  
