@@ -27,4 +27,16 @@
 	     (setf (aref vector (position first-location vector)) (aref vector (position second-location vector)))
 	     (setf (aref vector tmp-index) tmp)
 	     )vector)
+
+(defun hello-world ()
+	   (defparameter init #(1 2 3 4 5 6 7 8))
+	   (progn
+	        (vector-swap init 2 3)
+		(vector-swap init 4 5)
+		(vector-swap init 6 7)
+		(vector-swap init 2 5)
+		(vector-swap init 6 8)
+		(vector-swap init 2 4)
+		(vector-swap init 7 8)
+		))
   
