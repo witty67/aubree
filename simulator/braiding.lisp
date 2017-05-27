@@ -1,5 +1,11 @@
 (ql:quickload 'l-math)
-
+;;define quantum gates based on the anyonic topological model.-My favorite set of gates, Hadamard, CNOT and pi/8
+;;definitions of constants
+;; When 2 anyons fuse, the probability of seeing 1 is po = 1/golden-ratio^2= 0.38196 and the probability of seeing t is p1 1/golden ratio =0.61803
+(defparameter *init* #(1 2 3 4 5 6 7 8))
+(defvar golden-ratio 1.61803398)
+(defvar f-matrix (lm:make-matrix 2 2 :initial-elements `(,golden-ratio ,golden-ratio
+								 ,golden-ratio ,golden-ratio)))
 (defparameter first-braid (lm:make-matrix 5 9 :initial-elements
 	      '(4 0 0 0 0 0 0 0 0
 		3 0 0 0 0 0 0 0 0
@@ -29,7 +35,6 @@
 	     )vector)
 
 (defun hello-world ()
-	   (defparameter *init* #(1 2 3 4 5 6 7 8))
 	   (progn
 	        (vector-swap *init* 2 3)
 		(vector-swap *init* 4 5)
@@ -40,13 +45,22 @@
 		(vector-swap *init* 7 8)
 		))
 
+#|may 26 2017: Define fusion trees.
+If two well-separated anyons Yi and Yj are exchanged slowly enough, the system will  be in another 
+ground state equals sum of biei in V(S,pi,Yi)
 
-;;may 26 2017: Define fusion trees. 
+
+|#
 (defun product-sum (l y)
 	   (let ((random_num 0))
 	   (cond
 	    ( (and (eq l 1) (eq y t)) 't)
 	    ((and (eq l t) (eq y 1)) 't)
 	    ((and (eq l t) (eq y t)) (progn
-				       (setf random_num (random 2))
+				       (setf random_num  (if (<= (random 2) (/ 1 golden-ratio)) 1 0))
 				       (if (eq random_num 1) 't 1))))))
+
+
+;Just a place holder.
+(defun quantum-system (surface location anyon)
+	   (+ surface location anyon))
