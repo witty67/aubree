@@ -29,14 +29,24 @@
 	     )vector)
 
 (defun hello-world ()
-	   (defparameter init #(1 2 3 4 5 6 7 8))
+	   (defparameter *init* #(1 2 3 4 5 6 7 8))
 	   (progn
-	        (vector-swap init 2 3)
-		(vector-swap init 4 5)
-		(vector-swap init 6 7)
-		(vector-swap init 2 5)
-		(vector-swap init 6 8)
-		(vector-swap init 2 4)
-		(vector-swap init 7 8)
+	        (vector-swap *init* 2 3)
+		(vector-swap *init* 4 5)
+		(vector-swap *init* 6 7)
+		(vector-swap *init* 2 5)
+		(vector-swap *init* 6 8)
+		(vector-swap *init* 2 4)
+		(vector-swap *init* 7 8)
 		))
-  
+
+
+;;may 26 2017: Define fusion trees. 
+(defun product-sum (l y)
+	   (let ((random_num 0))
+	   (cond
+	    ( (and (eq l 1) (eq y t)) 't)
+	    ((and (eq l t) (eq y 1)) 't)
+	    ((and (eq l t) (eq y t)) (progn
+				       (setf random_num (random 2))
+				       (if (eq random_num 1) 't 1))))))
