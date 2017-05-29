@@ -2,7 +2,32 @@
 ;;define quantum gates based on the anyonic topological model.-My favorite set of gates, Hadamard, CNOT and pi/8
 ;;definitions of constants
 ;; When 2 anyons fuse, the probability of seeing 1 is po = 1/golden-ratio^2= 0.38196 and the probability of seeing t is p1 1/golden ratio =0.61803
+
+
+
 (defparameter *init* #(1 2 3 4 5 6 7 8))
+
+;;Test program and database definitions found on:https://www.linkedin.com/pulse/how-write-your-first-quantum-program-view-supply-christoph
+(defparameter *quantum-program*
+	   `((hadamard 2)
+	     (hadamard 1)
+	     (u-theta 0 ,(/ pi 4))
+	     (oracle ORACLE-TT 2 1 0)
+	     (hadamard 2)
+	     (cnot 2 1)
+	     (hadamard 2)
+	     (u-theta 2 ,(/ pi 2))
+	     (u-theta 1 ,(/ pi 2))))
+
+(defparameter *database* '(0 1 0 0))
+
+(defvar *oracle*
+	   (execute-quantum-program 
+	    *quantum-program*
+	    3
+	    *database*))
+(defparameter result (mapcar #'round (multi-qsys-output-probabilities *oracle* '(2 1))))
+
 (defvar golden-ratio 1.61803398)
 (defvar f-matrix (lm:make-matrix 2 2 :initial-elements `(,golden-ratio ,golden-ratio
 								 ,golden-ratio ,golden-ratio)))
@@ -61,6 +86,15 @@ ground state equals sum of biei in V(S,pi,Yi)
 				       (if (eq random_num 1) 't 1))))))
 
 
-;Just a place holder.
+ ;Just a place holder.
 (defun quantum-system (surface location anyon)
-	   (+ surface location anyon))
+  (+ surface location anyon))
+
+
+
+;;May 28
+(defun pauli (a)
+	   (labels ((kronecker (i j)
+			      (if (equal i j) 1 0)))
+			   `( ,(kronecker a 3) ,(- (kronecker a 1) (complex  0 (kronecker a 2)))
+			      ,(+ (kronecker a 1) (complex  0 (kronecker a 2))) ,(- 0 (kronecker a 3)))))
