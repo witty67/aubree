@@ -90,11 +90,10 @@ ground state equals sum of biei in V(S,pi,Yi)
 (defun quantum-system (surface location anyon)
   (+ surface location anyon))
 
-
-
-;;May 28
+;;May 29
 (defun pauli (a)
 	   (labels ((kronecker (i j)
 			      (if (equal i j) 1 0)))
+	     (if (equal a 0) (map 'list (lambda (n) (if (equal n 0) 1 0)) (pauli 1))
 			   `( ,(kronecker a 3) ,(- (kronecker a 1) (complex  0 (kronecker a 2)))
-			      ,(+ (kronecker a 1) (complex  0 (kronecker a 2))) ,(- 0 (kronecker a 3)))))
+			      ,(+ (kronecker a 1) (complex  0 (kronecker a 2))) ,(- 0 (kronecker a 3))))))

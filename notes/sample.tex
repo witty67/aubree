@@ -75,8 +75,6 @@
 \section{Introduction}
 \label{introduction}
 
-You will almost certainly start with an introductory description of the topic that you investigated in your assignment.  Discuss any goals, motivation, or examples of the subject; the key is to provide the reader with any information that is necessary to understand why your topic was worth investigating.  This descriptive section should also allow the reader to understand the subsequent detail sections on the subject.
-
 The problem: There are barerly any implementations of topological qunatum computing in software, the only one I found was about using using surfaces codes for error correction.
 
 Why is it interesting or important? It is interesting because if a topological computer that can simulate one qubit is built, It will be very easy to scale it to a limitless number of qubits. This is because topological quantum computers, unlike other method of quantum computing, is fault toloreant. This is important because researchers are making progress in finding materials that give topological phases in matter. The person who won last year's nobel prize basical found, So even though non-ableian anyons have not been found, if they are found the implecationns of the qunatum computing capabilities that can be build from it will be astounding.
@@ -100,26 +98,29 @@ Summary of contributions:
 
 
 \section{Background, Preliminary, and Related Work}
+\subsection{Quantum Computing}
+Quantum comptuing contains Qubits which are in a Superposition of two States
 
-Perhaps the most important functionality to learn for the paper is \LaTeX\ bibliography support.  Citations and references are handled automatically by \LaTeX\ through its companion program, \BibTeX.  All you have to do is provide a bibliography file that provides the reference information and internal keys (very much like variable names) that you use in your document.\footnote{And always remember to run \LaTeX\ \emph{at least twice} after running \BibTeX.}
+\subsection{Universal Quantum Computing}
+There are only a small number of Quantum Gates that need to be applied to Qubits to perform any computation that can be computed. Church-Turing theiss says that a universal model of computation can simulate another universal model of computation.
 
-\BibTeX\ supports virtually all kinds of references, including books \cite{dui,sgg,iokit,palmos}, parts of books \cite{userModeLinux}, articles \cite{nielsen:dui-review,heer-shneiderman,stackableThreads,xpkernel}, and conference proceedings \cite{ux-3d,iring,contextFileSearch,osHaskell,hibernator}, to name a few.  If not already included in your \LaTeX\ distribution, download and install the \texttt{url} package to support formatting of URLs; you can usually mention these in the \emph{note} or \emph{howpublished} fields of your \BibTeX\ file.
+List of models of computation, Quantum Circuit, One-Way-Quantum Computer, Topological Quantum Computer
 
-Like Section~\ref{introduction}, a background, preliminary, and related work section is also almost certainly needed for your paper.  In this section, describe any history, work, or projects that serve as direct contributors to the subject of your research paper.  Look at other papers in the literature to see how they organized, presented, and discussed prior work.
-
-The Shneiderman/Plaisant text \cite{dui} provide some pointers to seminal or key works; because they made it into the textbook they aren't necessarily ``bleeding edge,'' but they likely provide the foundation for your chosen subject matter.
+\subsection{Topological Quantum Computing}
+This is a fault-tolerant way of building a quantum computer. 
 \pagebreak
-\section{Main Content Sections}
+
+\section{Aubree by example}
 
 The outline after the introductory and background, preliminary, and related work sections is more dependent on the specific subject of your research.  Remember to cite references where appropriate, organize the material so that it flows well and is clear to the reader.
 
-\subsection{Multiple Outline Levels}
+\subsection{Deutch Algorithm}
 
 \LaTeX\ has support for up to three outline levels (\verb!\section!, \verb!\subsection!, and \verb!\subsubsection!).  It also recognizes \verb!\paragraph! and \verb!\subparagraph! directives, though those don't show up in the table of contents.  All of these directives expect a title.
 
 Note also the use of the \verb!\verb! directive for inserting code-like labels or symbols.  It was particularly needed here so that we can include the backslash character in the text.
 
-\subsection{Tables and Figures}
+\subsection{Braid Generation}
 
 \LaTeX\ has full support for tables and figures.  Table~\ref{table-sample} shows a sample table and Figure~\ref{figure-sample} shows a sample figure.  Note the built-in support for captions and the automated numbering functionality.  Lists of tables and figures can also be automatically generated, as seen at the beginning of this document.
 
@@ -161,59 +162,13 @@ g & h & i \\\hline
 \label{table-sample2}
 \end{table}
 
-\section{Another Section}
+\subsection{Optimizations}
+This is how the circuits are optimized with the braids
 
-We're adding another section just so you can see how that looks.  Plus there are a few more \LaTeX\ features to illustrate.
 
-\subsection{Bulleted and Numbered Lists}
+\subsection{Simulating Aubree on IBM's quantum processor}
+These anyons can be theoretically simulated on IBM'S qunatum processor, so it gives a feel of how a topological quantum computer can be simulated using Quantum Gates
 
-\LaTeX\ is very good at providing clean lists.  Examples are shown below.
-
-\begin{itemize}
-\item Bulleted items come out properly indented and spaced, every time.
-
-\begin{itemize}
-\item Sub-bullets are a virtual no-brainer: just nest another \verb!itemize! block.
-\item Note how the bullet character automatically changes too.
-\end{itemize}
-
-\item Just keep on adding \verb!\item!s\ldots
-
-\item \ldots until you're done.
-\end{itemize}
-
-Numbered lists are almost identical, except that you specify \verb!enumerate! instead of \verb!itemize!.  List items are specified in exactly the same way (thus making it easy to change list types).
-
-\begin{enumerate}
-\item A list item
-\item Another list item
-\item A list item with multiple nested lists
-
-\begin{itemize}
-\item Nested lists can be of mixed types.
-\item That's a lot of power and flexibility for the price of learning a handful of directives.
-
-\begin{enumerate}
-\item Like nested bullet lists, nested numbered lists also ``intelligently'' change their numbering schemes.
-\item Meanwhile, all \emph{you} have to write is \verb!\item!.  \LaTeX\ does the rest.
-\end{enumerate}
-\end{itemize}
-
-\item Back to your regularly scheduled list item
-
-\end{enumerate}
-
-\subsection{Subsection with Another Figure}
-
-We may as well include a second figure also, shown in Figure~\ref{figure-sample2}.  The same image file is used, but note how it can be resized.  Again, observe how the positions of the tables and figures do not necessarily match their positions in the source file, reiterating the aforementioned \LaTeX\ functionality for deciding where these items go in the final document.  You provide an approximate location, and \LaTeX\ does the rest.
-
-\begin{figure}
-\centering
-\includegraphics[width=1in]{space.png} 
-
-\caption{Another sample figure}
-\label{figure-sample2}
-\end{figure}
 
 \section{Conclusion}
 
