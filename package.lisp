@@ -1,4 +1,4 @@
 ;;;; package.lisp
 
-(defpackage #:example
+(defpackage #:aubree
   (:use #:cl))

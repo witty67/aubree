@@ -1,6 +1,6 @@
-(asdf:defsystem #:example
+(asdf:defsystem "aubree"
   :serial t
-  :description "Example cl-heroku application"
+  :description "A Topological Quantum Computer Simulator"
   :depends-on (#:hunchentoot
 	       #:cl-who
 	       #:postmodern)
