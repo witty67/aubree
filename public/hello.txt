@@ -1,1 +1,1 @@
-Hi. I'm a text file being served by Hunchentoot.
+Hi. I'm a text file being served by Hunchentoot. It's all good!
