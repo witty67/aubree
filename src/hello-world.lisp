@@ -9,22 +9,21 @@
 
 (defun css-generator()
 	  (css-lite:css
-  (("body") (:background-color "red"))))
+  (("body") (:background-color "blue"))))
 
 
 (defmacro css-maker ()
 	  (let ((local-header "<style type = \"text/css\" media = \"all\">"))
-	    ` (cl-who:with-html-output-to-string (s)
+	    ` (hunchentoot:define-easy-handler (say-yo :uri "/css") ()
+	       (cl-who:with-html-output-to-string (s)
 	       (:html
 		(:head
 		 ,(concatenate 'string local-header (css-generator))
 		 (:title "Test page5"))
 		(:body
-		 (:p "CL-WHO is really easy to use Test"))))))
+		 (:p "CL-WHO is really easy to use Test")))))))
 
-
-;;(hunchentoot:define-easy-handler (say-yo2 :uri "/css") ()
-;;(css-maker))
+(css-maker)
 
 
 
@@ -73,7 +72,7 @@ TODO: cleanup code."
 
 
 
-(hunchentoot:define-easy-handler (say-yo :uri "/") ()
+(hunchentoot:define-easy-handler (say-yo2 :uri "/") ()
   (cl-who:with-html-output-to-string (s)
    (:html
               (:head
