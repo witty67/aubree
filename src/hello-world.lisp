@@ -88,7 +88,7 @@ TODO: cleanup code."
 
 (defmacro css-maker ()
 	  (let ((local-header "<style type = \"text/css\" media = \"all\">"))
-	    `(cl-who:with-html-output (*standard-output* nil :indent t)
+	    ` (cl-who:with-html-output-to-string (s)
 	       (:html
 		(:head
 		 ,(concatenate 'string local-header (css-generator))
@@ -98,5 +98,4 @@ TODO: cleanup code."
 
 
 (hunchentoot:define-easy-handler (say-yo2 :uri "/") ()
-(cl-who:with-html-output (*standard-output* nil :indent t)
-    (css-maker)))
+    (css-maker))
