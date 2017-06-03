@@ -45,7 +45,7 @@ TODO: cleanup code."
 (postmodern:query "select version()"))))))))
 
 
-(hunchentoot:define-easy-handler (say-yo :uri "/") ()
+(hunchentoot:define-easy-handler (say-yo :uri "/cl-who-banner") ()
   (cl-who:with-html-output-to-string (s)
     (:html
               (:head
