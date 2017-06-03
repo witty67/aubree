@@ -23,8 +23,8 @@
 		 (:p "CL-WHO is really easy to use Test"))))))
 
 
-(hunchentoot:define-easy-handler (say-yo2 :uri "/css") ()
-(css-maker))
+;;(hunchentoot:define-easy-handler (say-yo2 :uri "/css") ()
+;;(css-maker))
 
 
 
