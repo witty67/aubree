@@ -9,6 +9,18 @@
 	  (css-lite:css
 	   (("body") (:background-color "blue"))))
 
+(defmacro css-maker ()
+	  (let ((local-header "<style type = \"text/css\" media = \"all\">"))
+	    ` (cl-who:with-html-output-to-string (s)
+	       (:html
+		(:head
+		 ,(concatenate 'string local-header (css-generator))
+		 (:title "Test page5"))
+		(:body
+		 (:p "CL-WHO is really easy to use Test"))))))
+
+
+
 
 (defun heroku-slug-dir ()
   (heroku-getenv "HOME"))
