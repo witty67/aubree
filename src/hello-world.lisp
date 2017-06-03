@@ -22,7 +22,7 @@ TODO: cleanup code."
 
 (push (hunchentoot:create-folder-dispatcher-and-handler "/static/" (concatenate 'string (heroku-slug-dir) "/public/")) hunchentoot:*dispatch-table*)
 
-(hunchentoot:define-easy-handler (hello-sbcl :uri "/") ()
+(hunchentoot:define-easy-handler (hello-sbcl :uri "placeholder") ()
   (cl-who:with-html-output-to-string (s)
     (:html
      (:head
@@ -45,9 +45,14 @@ TODO: cleanup code."
 			     (postmodern:query "select version()"))))))))
 
 
-(hunchentoot:define-easy-handler (say-yo :uri "/yo") (name)
-  (setf (hunchentoot:content-type*) "text/plain")
-  (format nil "Hey~@[ ~A~]!" name))
+(hunchentoot:define-easy-handler (say-yo :uri "/") ()
+  (cl-who:with-html-output-to-string (s)
+    (:html
+              (:head
+                 (:title "Test page"))
+              (:body
+                 (:p "CL-WHO is really easy to use")))))
+ 
 
 (hunchentoot:define-easy-handler (say-yo1 :uri "/u2") (name)
   (setf (hunchentoot:content-type*) "text/plain")

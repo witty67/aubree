@@ -16,9 +16,7 @@
 	       (:module :src
 			:serial t      
 			:components ((:file "hello-world")
-				     (:module :util
-					       :serial t
-					       :components ((:file "heroku-utils")))
+				    
 
 
 
