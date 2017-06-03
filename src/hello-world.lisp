@@ -67,12 +67,14 @@ TODO: cleanup code."
 
 
 (hunchentoot:define-easy-handler (say-yo :uri "/") ()
-  (cl-who:with-html-output-to-string (s)
-    (:html
-              (:head
-                 (:title "Test page"))
-              (:body
-                 (:p "CL-WHO is really easy to use")))))
+ ;; (cl-who:with-html-output-to-string (s)
+   ;; (:html
+            ;;  (:head
+                ;; (:title "Test page"))
+              ;;(:body
+					; (:p "CL-WHO is really easy to use")))))
+  ;;(hunchentoot:define-easy-handler (say-yo2 :uri "/css") ()
+    (css-maker))
  
 
 (hunchentoot:define-easy-handler (say-yo1 :uri "/u1") (name)
