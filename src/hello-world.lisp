@@ -43,3 +43,12 @@ TODO: cleanup code."
        (:pre "SELECT version();"))
       (:div (format s "~A" (postmodern:with-connection (db-params)
 			     (postmodern:query "select version()"))))))))
+
+
+(hunchentoot:define-easy-handler (say-yo :uri "/yo") (name)
+  (setf (hunchentoot:content-type*) "text/plain")
+  (format nil "Hey~@[ ~A~]!" name))
+
+(hunchentoot:define-easy-handler (say-yo1 :uri "/u2") (name)
+  (setf (hunchentoot:content-type*) "text/plain")
+  (format nil "Hey~@[ ~A~]!" name))
