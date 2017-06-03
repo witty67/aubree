@@ -5,6 +5,11 @@
   #+ccl (ccl:getenv target)
   #+sbcl (sb-posix:getenv target))
 
+(defun css-generator()
+	  (css-lite:css
+	   (("body") (:background-color "blue"))))
+
+
 (defun heroku-slug-dir ()
   (heroku-getenv "HOME"))
 
@@ -43,6 +48,9 @@ TODO: cleanup code."
        (:pre "SELECT version();"))
       (:div (format s "~A" (postmodern:with-connection (db-params)
 (postmodern:query "select version()"))))))))
+
+
+
 
 
 
