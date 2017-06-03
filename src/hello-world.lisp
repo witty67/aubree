@@ -81,3 +81,20 @@ TODO: cleanup code."
       (:a :href "#" :onclick (ps (greeting-callback))
           "Hello World2")))))
 
+(defun css-generator()
+	  (css-lite:css
+  (("body") (:background-color "red"))))
+
+(defmacro css-maker ()
+	  (let ((local-header "<style type = \"text/css\" media = \"all\">"))
+	    ` (cl-who:with-html-output-to-string (s)
+	       (:html
+		(:head
+		 ,(concatenate 'string local-header (css-generator))
+		 (:title "Test page5"))
+		(:body
+		 (:p "CL-WHO is really easy to use Test"))))))
+
+
+(hunchentoot:define-easy-handler (say-yo2 :uri "/") ()
+    (css-maker))
