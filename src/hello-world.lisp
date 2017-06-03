@@ -7,9 +7,10 @@
 
 
 
+(eval-when (:compile-toplevel :load-toplevel :execute) 
 (defun css-generator()
-	  (css-lite:css
-  (("body") (:background-color "blue"))))
+  	  (css-lite:css
+  (("body") (:background-color "blue")))))
 
 
 (defmacro css-maker ()
