@@ -5,9 +5,12 @@
   #+ccl (ccl:getenv target)
   #+sbcl (sb-posix:getenv target))
 
+
+
 (defun css-generator()
 	  (css-lite:css
-	   (("body") (:background-color "blue"))))
+  (("body") (:background-color "red"))))
+
 
 (defmacro css-maker ()
 	  (let ((local-header "<style type = \"text/css\" media = \"all\">"))
@@ -18,6 +21,10 @@
 		 (:title "Test page5"))
 		(:body
 		 (:p "CL-WHO is really easy to use Test"))))))
+
+
+(hunchentoot:define-easy-handler (say-yo2 :uri "/css") ()
+(css-maker))
 
 
 
@@ -67,14 +74,13 @@ TODO: cleanup code."
 
 
 (hunchentoot:define-easy-handler (say-yo :uri "/") ()
- ;; (cl-who:with-html-output-to-string (s)
-   ;; (:html
-            ;;  (:head
-                ;; (:title "Test page"))
-              ;;(:body
-					; (:p "CL-WHO is really easy to use")))))
-  ;;(hunchentoot:define-easy-handler (say-yo2 :uri "/css") ()
-    (css-maker))
+  (cl-who:with-html-output-to-string (s)
+   (:html
+              (:head
+                 (:title "Test page"))
+              (:body
+					(:p "CL-WHO is really easy to use")))))
+ 
  
 
 (hunchentoot:define-easy-handler (say-yo1 :uri "/u1") (name)
@@ -98,10 +104,17 @@ TODO: cleanup code."
       (:script :type "text/javascript"
                (str (ps
                       (defun greeting-callback ()
-                        (alert "Hello World2"))))))
+                        (alert "Hello World"))))))
      (:body
       (:h2 "Parenscript tutorial: 2nd example")
       (:a :href "#" :onclick (ps (greeting-callback))
           "Hello World2")))))
+
+
+
+
+
+
+
 
 
