@@ -1,8 +1,5 @@
-(ql:quickload :hunchentoot)
-(ql:quickload :cl-who)
-(ql:quickload :postmodern)
-(ql:quickload :simple-date)
-(ql:quickload :parenscript)
+(ql:quickload '(hunchentoot cl-who postmodern simple-date parenscript cl-fad
+		fiveam css-lite cl-json))
 
 (asdf:defsystem "aubree"
   :serial t
@@ -10,7 +7,8 @@
   :depends-on (#:hunchentoot
 	       #:cl-who
 	       #:postmodern
-	       #:parenscript)
+	       #:parenscript
+	       #:cl-fad)
   
   :components ((:file "package")
 	       (:module :src

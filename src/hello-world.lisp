@@ -22,7 +22,7 @@ TODO: cleanup code."
 
 (push (hunchentoot:create-folder-dispatcher-and-handler "/static/" (concatenate 'string (heroku-slug-dir) "/public/")) hunchentoot:*dispatch-table*)
 
-(hunchentoot:define-easy-handler (hello-sbcl :uri "placeholder") ()
+(hunchentoot:define-easy-handler (hello-sbcl :uri "/placeholder") ()
   (cl-who:with-html-output-to-string (s)
     (:html
      (:head
@@ -42,7 +42,7 @@ TODO: cleanup code."
       (:div
        (:pre "SELECT version();"))
       (:div (format s "~A" (postmodern:with-connection (db-params)
-			     (postmodern:query "select version()"))))))))
+(postmodern:query "select version()"))))))))
 
 
 (hunchentoot:define-easy-handler (say-yo :uri "/") ()
@@ -54,6 +54,30 @@ TODO: cleanup code."
                  (:p "CL-WHO is really easy to use")))))
  
 
-(hunchentoot:define-easy-handler (say-yo1 :uri "/u2") (name)
+(hunchentoot:define-easy-handler (say-yo1 :uri "/u1") (name)
   (setf (hunchentoot:content-type*) "text/plain")
   (format nil "Hey~@[ ~A~]!" name))
+
+(hunchentoot:define-easy-handler (tutorial1 :uri "/tutorial1") ()
+  (with-html-output-to-string (s)
+    (:html
+     (:head (:title "Parenscript tutorial: 1st example"))
+     (:body (:h2 "Parenscript tutorial: 1st example")
+            "Please click the link below." :br
+            (:a :href "#" :onclick (ps (alert "Hello World"))
+                "Hello World")))))
+
+(hunchentoot:define-easy-handler (tutorial3 :uri "/tutorial3") ()
+  (cl-who:with-html-output-to-string (s)
+    (:html
+     (:head
+      (:title "Parenscript tutorial: 2nd example")
+      (:script :type "text/javascript"
+               (str (ps
+                      (defun greeting-callback ()
+                        (alert "Hello World2"))))))
+     (:body
+      (:h2 "Parenscript tutorial: 2nd example")
+      (:a :href "#" :onclick (ps (greeting-callback))
+          "Hello World2")))))
+
