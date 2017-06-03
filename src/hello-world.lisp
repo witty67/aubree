@@ -45,7 +45,7 @@ TODO: cleanup code."
 (postmodern:query "select version()"))))))))
 
 
-(hunchentoot:define-easy-handler (say-yo :uri "/") ()
+(hunchentoot:define-easy-handler (say-yo :uri "/cl-who-banner") ()
   (cl-who:with-html-output-to-string (s)
     (:html
               (:head
@@ -81,9 +81,14 @@ TODO: cleanup code."
       (:a :href "#" :onclick (ps (greeting-callback))
           "Hello World2")))))
 
+
+
+
+
 (defun css-generator()
 	  (css-lite:css
-  (("body") (:background-color "red"))))
+  (("body") (:background-color "blue"))))
+
 
 (defmacro css-maker ()
 	  (let ((local-header "<style type = \"text/css\" media = \"all\">"))
