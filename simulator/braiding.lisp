@@ -1,32 +1,37 @@
 (ql:quickload 'l-math)
+(load "qgame.lisp")
 ;;define quantum gates based on the anyonic topological model.-My favorite set of gates, Hadamard, CNOT and pi/8
 ;;definitions of constants
 ;; When 2 anyons fuse, the probability of seeing 1 is po = 1/golden-ratio^2= 0.38196 and the probability of seeing t is p1 1/golden ratio =0.61803
 
 
+;;auxillary functions
+
+(defun square(x)
+  (* x x))
 
 (defparameter *init* #(1 2 3 4 5 6 7 8))
 
 ;;Test program and database definitions found on:https://www.linkedin.com/pulse/how-write-your-first-quantum-program-view-supply-christoph
-(defparameter *quantum-program*
-	   `((hadamard 2)
-	     (hadamard 1)
-	     (u-theta 0 ,(/ pi 4))
-	     (oracle ORACLE-TT 2 1 0)
-	     (hadamard 2)
-	     (cnot 2 1)
-	     (hadamard 2)
-	     (u-theta 2 ,(/ pi 2))
-	     (u-theta 1 ,(/ pi 2))))
+;(defparameter *quantum-program*
+;	   `((hadamard 2)
+;	     (hadamard 1)
+;	     (u-theta 0 ,(/ pi 4))
+;	     (oracle ORACLE-TT 2 1 0)
+;	     (hadamard 2)
+;	     (cnot 2 1)
+;	     (hadamard 2)
+;	     (u-theta 2 ,(/ pi 2))
+;	     (u-theta 1 ,(/ pi 2))))
 
 (defparameter *database* '(0 1 0 0))
 
-(defvar *oracle*
-	   (execute-quantum-program 
-	    *quantum-program*
-	    3
-	    *database*))
-(defparameter result (mapcar #'round (multi-qsys-output-probabilities *oracle* '(2 1))))
+;(defvar *oracle*
+;	   (execute-quantum-program 
+;	    *quantum-program*
+;	    3
+;	    *database*))
+;(defparameter result (mapcar #'round (multi-qsys-output-probabilities *oracle* '(2 1))))
 
 (defvar golden-ratio 1.61803398)
 (defvar f-matrix (lm:make-matrix 2 2 :initial-elements `(,golden-ratio ,golden-ratio
@@ -96,4 +101,41 @@ ground state equals sum of biei in V(S,pi,Yi)
 			      (if (equal i j) 1 0)))
 	     (if (equal a 0) (map 'list (lambda (n) (if (equal n 0) 1 0)) (pauli 1))
 			   `( ,(kronecker a 3) ,(- (kronecker a 1) (complex  0 (kronecker a 2)))
-			      ,(+ (kronecker a 1) (complex  0 (kronecker a 2))) ,(- 0 (kronecker a 3))))))
+			       ,(+ (kronecker a 1) (complex  0 (kronecker a 2))) ,(- 0 (kronecker a 3))))))
+
+
+;;June 5th 2017:https://arxiv.org/abs/0708.0261
+(defparameter c1 #c(5 3))
+(defparameter c2 #c(-3 -2))
+(defparameter test-vector (coerce '(#c(0 1)) 'vector))
+
+(defun modulus (a b)
+  (sqrt (+ (square a) (square b))))
+
+(defun probability (c)
+  (square (modulus (realpart c) (imagpart c))))
+
+(setf (symbol-value '-1/sqrt2)  (/ -1 (sqrt 2)))
+
+(defvar 1/sqrt2 (/ 1 (sqrt 2)))
+(defvar -1/sqrt2 (/ -1 (sqrt 2)))
+
+(defparameter test-vector  `( ,1/sqrt2 ,1/sqrt2 ,0
+	   (0 -1/sqrt2) (0 1/sqrt2) 0
+	   0 0 (0 1)))
+
+ (defun make-complex (list)
+	   (cond ((and (symbolp (first list)) (symbolp (second list))) (complex (symbol-value (first list)) (symbol-value (second list))))
+		 ((and (not (symbolp (first list))) (symbolp (second list))) (complex (first list) (symbol-value (second list))))
+		 ((and (symbolp (first list)) (not (symbolp (second list)))) (complex (first list) (symbol-value (second list))))
+		 ((and (not (symbolp (first list))) (not (symbolp (second list)))) (complex (first list) (second list)))
+		 ))
+
+(defun eval-list (n)
+	   (cond ((null  n)'finished)
+		 ((listp (car n)) (progn (print (make-complex (car n)))
+					 (eval-list (cdr n))))
+		 (t
+		  (eval-list (cdr n)))))
+
+
