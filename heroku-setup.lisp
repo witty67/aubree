@@ -2,9 +2,9 @@
 
 (print ">>> Building system....")
 
-(load (merge-pathnames "example.asd" *build-dir*))
+(load (merge-pathnames "aubree.asd" *build-dir*))
 
-(ql:quickload :example)
+(ql:quickload :aubree)
 
 ;;; Redefine / extend heroku-toplevel here if necessary.
 
