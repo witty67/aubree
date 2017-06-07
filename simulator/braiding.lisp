@@ -116,6 +116,7 @@ ground state equals sum of biei in V(S,pi,Yi)
   (square (modulus (realpart c) (imagpart c))))
 
 (setf (symbol-value '-1/sqrt2)  (/ -1 (sqrt 2)))
+(setf (symbol-value '1/sqrt2)  (/ 1 (sqrt 2)))
 
 (defvar 1/sqrt2 (/ 1 (sqrt 2)))
 (defvar -1/sqrt2 (/ -1 (sqrt 2)))
@@ -139,3 +140,45 @@ ground state equals sum of biei in V(S,pi,Yi)
 		  (eval-list (cdr n)))))
 
 
+#|
+June 6th 2017
+Ways to implement qubits: atoms, photon, subatomic particle.
+|#
+
+(defparameter v '(#c(5 3) #c(0 6)))
+
+(defun square-complex (x)
+  (+ (square (realpart x)) (square  (imagpart x))))
+
+(defun complex-modulus (a b)
+  (sqrt (+ (square-complex a) (square-complex b))))
+
+(defparameter norm (complex-modulus #c(5 3) #c(0 6)))
+
+(defun qstate (v)
+	   (let ((norm  (complex-modulus #c(5 3) #c(0 6))))
+	    `(,(/ (first v) norm) ,(/ (second v) norm))))
+
+(defparameter physical-state (qstate v))
+
+(defparameter my-classical-not (lm:make-matrix 2 2 :initial-elements '(0 1
+								       1 0)))
+
+
+(defun apply-not (n)
+	   (lm:* my-classical-not n))
+
+(defparameter input (lm:make-matrix 2 2 :initial-elements '(1 0
+							    0 0)))
+
+(defparameter hadamard `(,1/sqrt2 ,1/sqrt2 ,1/sqrt2  ,1/sqrt2))
+
+
+(defparameter cnot (lm:make-matrix 4 4 :initial-elements '( 1 0 0 0
+							      0 1 0 0
+							      0 0 0 1
+							      0 0 1 0)))
+
+
+(defparameter function1 (lm:make-matrix 2 2 :initial-elements '(1 1
+									 0 0)))
