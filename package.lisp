@@ -1,4 +1,4 @@
 ;;;; package.lisp
 
 (defpackage #:aubree
-  (:use #:cl #:cl-who  #:postmodern #:parenscript  #:cl-fad))
+  (:use #:cl #:cl-who #:hunchentoot #:postmodern #:parenscript  #:cl-fad #:smackjack))

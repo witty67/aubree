@@ -1,5 +1,9 @@
 (in-package :aubree)
 
+(defun square (n)
+  (* n n))
+(defparameter *ending-tag* "</style>")
+(defparameter *dispatch-table* "")
 ;; Utils
 (defun heroku-getenv (target)
   #+ccl (ccl:getenv target)
@@ -10,19 +14,39 @@
 (eval-when (:compile-toplevel :load-toplevel :execute) 
 (defun css-generator()
   	  (css-lite:css
-  (("body") (:background-color "blue")))))
+	    (("body") (:background-color "linen"))
+	    
+	    )))
 
+(defun css-generator-cl-css ()
+  (cl-css:css '((body :margin 5px :padding 0px))))
 
+(defun css-generator-properties ()
+(css-lite:css
+  (("#foo")
+    (:length "50px"
+     :margin "50 px 30 px"
+     :border "1px solid red")
+   (("li")
+    (:width "50px"
+     :float "left"
+     :margin "50 px 30 px"
+     :border "1px solid red")))))
 (defmacro css-maker ()
 	  (let ((local-header "<style type = \"text/css\" media = \"all\">"))
 	    ` (hunchentoot:define-easy-handler (say-yo :uri "/css") ()
 	       (cl-who:with-html-output-to-string (s)
 	       (:html
 		(:head
-		 ,(concatenate 'string local-header (css-generator))
-		 (:title "Test page5"))
+		  ,(concatenate 'string local-header (concatenate 'string (css-generator) *ending-tag*)) 
+		  (:title "Introduction to Quantum Computing")
+		  )
 		(:body
-		 (:p "aubree uses QGame as for a backend")))))))
+		 (:p "aubree uses QGame as for a backend")
+
+		 )
+
+		)))))
 
 (css-maker)
 
@@ -68,20 +92,44 @@ TODO: cleanup code."
       (:div (format s "~A" (postmodern:with-connection (db-params)
 (postmodern:query "select version()"))))))))
 
+(defparameter *ajax-processor*
+  (make-instance 'ajax-processor :server-uri "/repl-api"))
 
-
-
+(smackjack:defun-ajax echo (data) (*ajax-processor* :callback-data :response-text)
+  (concatenate 'string "The square of your input is: " (write-to-string (square (read-from-string data)))))
 
 
 (hunchentoot:define-easy-handler (say-yo2 :uri "/") ()
   (cl-who:with-html-output-to-string (s)
    (:html
               (:head
-                 (:title "Test page"))
+	       (:title "Aubree")
+	      (str (generate-prologue *ajax-processor*))
+	      (:script :type "text/javascript"
+          (str
+            (ps
+              (defun callback (response)
+                (alert response))
+              (defun on-click ()
+                (chain smackjack (echo (chain document
+                                              (get-element-by-id "data")
+                                              value)
+                                       callback)))))))
+			
               (:body
-					(:p "aubree is powered by Qgame")))))
- 
- 
+	       (:h1 "Aubree: A Quantum Computer Simulator on the Cloud")
+	       (:p "Aubree is powered by <a href=http://faculty.hampshire.edu/lspector/qgame.html\>\QGAME</a>")
+	       (:p "Enter a number into the input box. You will get a square of it")
+	       (:p
+          (:input :id "data" :type "text"))
+	       (:p
+          (:button :type "button"
+                   :onclick (ps-inline (on-click))
+                   "Submit!"))))))   
+      
+(setq *dispatch-table* (list 'dispatch-easy-handlers
+                             (create-ajax-dispatcher *ajax-processor*)))
+
 
 (hunchentoot:define-easy-handler (say-yo1 :uri "/u1") (name)
   (setf (hunchentoot:content-type*) "text/plain")
