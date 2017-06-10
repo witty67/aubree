@@ -22,7 +22,7 @@
 		 ,(concatenate 'string local-header (css-generator))
 		 (:title "Test page5"))
 		(:body
-		 (:p "CL-WHO is really easy to use Test")))))))
+		 (:p "aubree uses QGame as for a backend")))))))
 
 (css-maker)
 
