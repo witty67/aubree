@@ -2,7 +2,7 @@
 
 (defun square (n)
   (* n n))
-(defparameter *ending-tag* "</style>")
+
 (defparameter *dispatch-table* "")
 ;; Utils
 (defun heroku-getenv (target)
@@ -10,16 +10,16 @@
   #+sbcl (sb-posix:getenv target))
 
 
-
 (eval-when (:compile-toplevel :load-toplevel :execute) 
 (defun css-generator()
   	  (css-lite:css
 	    (("body") (:background-color "linen"))
 	    
-	    )))
+	    ))
 
-(defun css-generator-cl-css ()
-  (cl-css:css '((body :margin 5px :padding 0px))))
+(defparameter *ending-tag* "</style>"))
+
+
 
 (defun css-generator-properties ()
 (css-lite:css

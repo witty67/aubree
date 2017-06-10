@@ -1,5 +1,5 @@
 (ql:quickload '(hunchentoot cl-who postmodern simple-date parenscript cl-fad
-		fiveam css-lite cl-json))
+		fiveam css-lite cl-json smackjack))
 
 (asdf:defsystem "aubree"
   :serial t
@@ -8,7 +8,9 @@
 	       #:cl-who
 	       #:postmodern
 	       #:parenscript
-	       #:cl-fad)
+	       #:cl-fad
+	       #:smackjack)
+	       
   
   :components ((:file "package")
 	       (:module :src
