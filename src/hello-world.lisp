@@ -79,7 +79,7 @@ TODO: cleanup code."
               (:head
                  (:title "Test page"))
               (:body
-					(:p "CL-WHO is really easy to use")))))
+					(:p "aubree is powered by Qgame")))))
  
  
 
