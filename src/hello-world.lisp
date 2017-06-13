@@ -2,6 +2,7 @@
 (load "../simulator/qgame.lisp")
 
 ;; Utils
+
 (defun heroku-getenv (target)
   #+ccl (ccl:getenv target)
   #+sbcl (sb-posix:getenv target))
