@@ -4,6 +4,7 @@
   (* n n))
 
 (defparameter *dispatch-table* "")
+(defparameter *data* "")
 ;; Utils
 (defun heroku-getenv (target)
   #+ccl (ccl:getenv target)
@@ -162,6 +163,11 @@ TODO: cleanup code."
 (setq *dispatch-table* (list 'dispatch-easy-handlers
                              (create-ajax-dispatcher *ajax-processor*)))
 
+(hunchentoot:define-easy-handler (upload :uri "/upload") (uploaded)
+    (rename-file (car uploaded)
+        (concatenate 'string "/tmp/"
+        (setf *data* (cl-base64:string-to-base64-string (cadr uploaded)))))
+*data*)
 
 (hunchentoot:define-easy-handler (say-yo1 :uri "/u1") (name)
   (setf (hunchentoot:content-type*) "text/plain")
