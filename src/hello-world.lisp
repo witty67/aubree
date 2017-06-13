@@ -110,22 +110,54 @@ TODO: cleanup code."
             (ps
               (defun callback (response)
                 (alert response))
+		
               (defun on-click ()
                 (chain smackjack (echo (chain document
                                               (get-element-by-id "data")
                                               value)
-                                       callback)))))))
+                                       callback)))
+
+
+	      ;(defun run-grover ()
+                ;(chain smackjack (echo-grover)))
+
+	      (defun run-qgame ()
+                (chain smackjack (echo-qgame (chain document
+                                              (get-element-by-id "program")
+                                              value)
+                                       callback)))
+
+	      ))))
 			
               (:body
 	       (:h1 "Aubree: A Quantum Computer Simulator on the Cloud")
 	       (:p "Aubree is powered by <a href=http://faculty.hampshire.edu/lspector/qgame.html\>\QGAME</a>")
 	       (:p "Enter a number into the input box. You will get a square of it")
-	       (:p
-          (:input :id "data" :type "text"))
-	       (:p
-          (:button :type "button"
+	       (:p (:input :id "data" :type "text"))
+	       (:p (:button :type "button"
                    :onclick (ps-inline (on-click))
-                   "Submit!"))))))   
+                   "Submit!"))
+
+	      ; (:p "Click Run Grover to run Grover's Algorithm")
+	       ;(:p (:input :id "data" :type "text"))
+
+	       ;(:p (:button :type "button"
+                ;   :onclick (ps-inline (run-grover))
+                 ;  "Run Grover"))
+	       
+	       (:p "Enter your program in the textbox and click Run to run it")
+	       (:p "<textarea id= \"program\" rows= \"4\" cols=\"50\" name=\"comment\" form=\"usrform\"></textarea>
+")
+		(:p (:button :type "button"
+                   :onclick (ps-inline (run-qgame))
+                   "Run!"))
+
+		"<form enctype=\"multipart/form-data\" action=\"upload\" method=\"POST\">
+ Upload your program as a file to run it: <input name=\"uploaded\" type=\"file\" /><br />
+ <input type=\"submit\" value=\"Upload\" />
+ </form>"
+		
+))))  
       
 (setq *dispatch-table* (list 'dispatch-easy-handlers
                              (create-ajax-dispatcher *ajax-processor*)))
