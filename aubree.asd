@@ -1,5 +1,5 @@
 (ql:quickload '(hunchentoot cl-who postmodern simple-date parenscript cl-fad
-		fiveam css-lite cl-json smackjack))
+		fiveam css-lite cl-json smackjack zpng l-math))
 
 (asdf:defsystem "aubree"
   :serial t
@@ -13,11 +13,14 @@
 	       
   
   :components ((:file "package")
-	       (:module :src
+	       (:module :web
 			:serial t      
-			:components ((:file "hello-world")				     				    
+			:components ((:file "index")))
 
-
-
-				     ))))
+	       (:module :simulators
+			:serial t      
+			:components ((:file "qgame")
+				     (:file "braiding")
+				     (:file "em")))
+	       ))
 
