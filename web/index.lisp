@@ -1,5 +1,6 @@
 (in-package :aubree)
-
+;;Load other pages
+(load "topological-intro.lisp")
 (defun square (n)
   (* n n))
 
@@ -182,20 +183,8 @@ TODO: cleanup code."
             (:a :href "#" :onclick (ps (alert "Hello World"))
                 "Hello World")))))
 
-(hunchentoot:define-easy-handler (tutorial3 :uri "/tutorial3") ()
-  (cl-who:with-html-output-to-string (s)
-    (:html
-     (:head
-      (:title "Parenscript tutorial: 2nd example")
-      (:script :type "text/javascript"
-               (str (ps
-                      (defun greeting-callback ()
-                        (alert "Hello World"))))))
-     (:body
-      (:h2 "Parenscript tutorial: 2nd example")
-      (:a :href "#" :onclick (ps (greeting-callback))
-          "Hello World2")))))
 
+(topological-page)
 
 
 
