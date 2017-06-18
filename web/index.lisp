@@ -1,6 +1,5 @@
 (in-package :aubree)
-;;Load other pages
-(load "topological-intro.lisp")
+
 (defun square (n)
   (* n n))
 

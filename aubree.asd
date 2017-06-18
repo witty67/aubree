@@ -15,8 +15,9 @@
   :components ((:file "package")
 	       (:module :web
 			:serial t      
-			:components ((:file "index")
-				     (:file "topological-intro")))
+			:components (
+				     (:file "topological-intro")
+				     (:file "index")))
 
 	       (:module :simulators
 			:serial t      
