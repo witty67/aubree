@@ -6,6 +6,9 @@
 
 ;;auxillary functions
 
+(defun process (data)
+  (print data))
+
 (defun square(x)
   (* x x))
 
