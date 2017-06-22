@@ -5,4 +5,4 @@
 
 (defpackage #:simulators
   (:use #:cl #:zpng)
-  (:export :process))
+  (:export :process :execute-quantum-program :amplitudes))

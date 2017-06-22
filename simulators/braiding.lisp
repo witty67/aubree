@@ -33,7 +33,7 @@
 ;	    *quantum-program*
 ;	    3
 ;	    *database*))
-;(defparameter result (mapcar #'round (multi-qsys-output-probabilities *oracle* '(2 1))))
+;(defparameter *result* (mapcar #'round (multi-qsys-output-probabilities *oracle* '(2 1))))
 
 (defvar golden-ratio 1.61803398)
 (defvar f-matrix (lm:make-matrix 2 2 :initial-elements `(,golden-ratio ,golden-ratio
@@ -220,3 +220,5 @@ F matrix:
 
 
 |#
+
+

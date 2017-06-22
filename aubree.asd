@@ -16,7 +16,9 @@
 
 	       (:module :simulators
 			:serial t      
-			:components ((:file "qgame")
+			:components (
+				     
+				     (:file "qgame")
 				     (:file "braiding")
 				     (:file "em")))
 	       

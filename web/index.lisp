@@ -166,10 +166,12 @@ TODO: cleanup code."
 (hunchentoot:define-easy-handler (upload :uri "/upload") (uploaded)
     (rename-file (car uploaded)
         (concatenate 'string "/tmp/"
-        (setf *data* (cl-base64:string-to-base64-string (cadr uploaded)))))
-    *data*)
+		     (setf *data* (cl-base64:string-to-base64-string (cadr uploaded)))))
+    
+    (simulators:process *data*))
+    
 
-(simulators:process *data*)
+
 
 (hunchentoot:define-easy-handler (say-yo1 :uri "/u1") (name)
   (setf (hunchentoot:content-type*) "text/plain")
