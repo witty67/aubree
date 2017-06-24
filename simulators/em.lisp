@@ -1,7 +1,10 @@
 (in-package :simulators)
- (cffi:define-foreign-library libexample
-    (t (:default "~/simulators/libexample"))) ;; note no .so suffix here
+
+(eval-when (:compile-toplevel :load-toplevel :execute) 
+(cffi:define-foreign-library libexample
+    (t (:default "~/simulators/libexample")))
 (cffi:use-foreign-library libexample)
+)
 
 (defun dot-product (a b)
   (+ (* (first a) (first b)) (* (second a) (second b)) (* (third a) (third b))))
