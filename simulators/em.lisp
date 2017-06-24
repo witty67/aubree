@@ -2,7 +2,7 @@
 
 (eval-when (:compile-toplevel :load-toplevel :execute) 
 (cffi:define-foreign-library libexample
-    (t (:default "~/simulators/libexample")))
+    (t (:default "libexample")))
 (cffi:use-foreign-library libexample)
 )
 
