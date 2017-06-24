@@ -1,4 +1,7 @@
 (in-package :simulators)
+ (cffi:define-foreign-library libexample
+    (t (:default "~/simulators/libexample"))) ;; note no .so suffix here
+(cffi:use-foreign-library libexample)
 
 (defun dot-product (a b)
   (+ (* (first a) (first b)) (* (second a) (second b)) (* (third a) (third b))))
@@ -12,4 +15,11 @@
    (* q (+ E (cross-product v B))))
 
 (defun force (q E v B)
-	   (lorentz q E v b))
+  (lorentz q E v b))
+
+(defun square (n)
+  (* n n))
+
+(cffi:defcfun "fact" :int
+    "Calculate the length of a string."
+    (n :int))

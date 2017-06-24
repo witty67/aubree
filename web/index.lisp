@@ -1,8 +1,5 @@
 (in-package :aubree)
 
-(defun square (n)
-  (* n n))
-
 (defparameter *dispatch-table* "")
 (defparameter *data* "")
 ;; Utils
@@ -97,8 +94,10 @@ TODO: cleanup code."
   (make-instance 'ajax-processor :server-uri "/repl-api"))
 
 (smackjack:defun-ajax echo (data) (*ajax-processor* :callback-data :response-text)
-  (concatenate 'string "The square of your input is: " (write-to-string (square (read-from-string data)))))
+  (concatenate 'string "The square of your input is: " (write-to-string (simulators:square (read-from-string data)))))
 
+(smackjack:defun-ajax echo-fact (data) (*ajax-processor* :callback-data :response-text)
+  (concatenate 'string "The factorial of your input is: " (write-to-string (simulators:fact (read-from-string data)))))
 
 (hunchentoot:define-easy-handler (say-yo2 :uri "/") ()
   (cl-who:with-html-output-to-string (s)
@@ -115,6 +114,12 @@ TODO: cleanup code."
               (defun on-click ()
                 (chain smackjack (echo (chain document
                                               (get-element-by-id "data")
+                                              value)
+                                       callback)))
+
+	      (defun on-click-fact ()
+                (chain smackjack (echo-fact (chain document
+                                              (get-element-by-id "data-fact")
                                               value)
                                        callback)))
 
@@ -137,6 +142,13 @@ TODO: cleanup code."
 	       (:p (:input :id "data" :type "text"))
 	       (:p (:button :type "button"
                    :onclick (ps-inline (on-click))
+                   "Submit!"))
+
+
+	       (:p "Enter a number into the input box. You will get a factorial called from a C Procedure")
+	       (:p (:input :id "data-fact" :type "text"))
+	       (:p (:button :type "button"
+                   :onclick (ps-inline (on-click-fact))
                    "Submit!"))
 
 	      ; (:p "Click Run Grover to run Grover's Algorithm")

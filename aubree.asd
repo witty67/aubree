@@ -1,5 +1,5 @@
 (ql:quickload '(hunchentoot cl-who postmodern simple-date parenscript cl-fad
-		fiveam css-lite cl-json smackjack zpng l-math))
+		fiveam css-lite cl-json smackjack zpng l-math cffi))
 
 (asdf:defsystem "aubree"
   :serial t

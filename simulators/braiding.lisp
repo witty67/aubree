@@ -229,3 +229,6 @@ F matrix:
 (defparameter *system* (execute-quantum-program  *quantum-program* 1))
 
 (defparameter *answer* (amplitudes (car *system*)))
+
+
+;;6/24/2017:gcc call_function.c -I/usr/include/python2.7 -lpython2.7 ; ./a.out
