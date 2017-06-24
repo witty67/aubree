@@ -15,25 +15,25 @@
 (defparameter *init* #(1 2 3 4 5 6 7 8))
 
 ;;Test program and database definitions found on:https://www.linkedin.com/pulse/how-write-your-first-quantum-program-view-supply-christoph
-;(defparameter *quantum-program*
-;	   `((hadamard 2)
-;	     (hadamard 1)
-;	     (u-theta 0 ,(/ pi 4))
-;	     (oracle ORACLE-TT 2 1 0)
-;	     (hadamard 2)
-;	     (cnot 2 1)
-;	     (hadamard 2)
-;	     (u-theta 2 ,(/ pi 2))
-;	     (u-theta 1 ,(/ pi 2))))
+(defparameter *quantum-program*
+	   `((hadamard 2)
+	     (hadamard 1)
+	     (u-theta 0 ,(/ pi 4))
+	     (oracle ORACLE-TT 2 1 0)
+	     (hadamard 2)
+	     (cnot 2 1)
+	     (hadamard 2)
+	     (u-theta 2 ,(/ pi 2))
+	     (u-theta 1 ,(/ pi 2))))
 
 (defparameter *database* '(0 1 0 0))
 
-;(defvar *oracle*
-;	   (execute-quantum-program 
-;	    *quantum-program*
-;	    3
-;	    *database*))
-;(defparameter *result* (mapcar #'round (multi-qsys-output-probabilities *oracle* '(2 1))))
+(defvar *oracle*
+	   (execute-quantum-program 
+	    *quantum-program*
+	    3
+	    *database*))
+(defparameter *result* (mapcar #'round (multi-qsys-output-probabilities *oracle* '(2 1))))
 
 (defvar golden-ratio 1.61803398)
 (defvar f-matrix (lm:make-matrix 2 2 :initial-elements `(,golden-ratio ,golden-ratio
@@ -221,4 +221,11 @@ F matrix:
 
 |#
 
+(defparameter *quantum-program* 
+			 '((qnot 0)
+			   (measure 0
+			    )))
 
+(defparameter *system* (execute-quantum-program  *quantum-program* 1))
+
+(defparameter *answer* (amplitudes (car *system*)))

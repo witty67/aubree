@@ -1,4 +1,4 @@
-
+(in-package :simulators)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; qgame.lisp
 ;; c) 1999-2004, Lee Spector (lspector@hampshire.edu)
@@ -917,11 +917,4 @@ algorithm (evolved with lgp2) for a 4 item database on all four
 
 
 |#
-(defparameter *quantum-program* 
-			 '((qnot 0)
-			   (measure 0
-			    )))
 
-(defparameter *system* (execute-quantum-program  *quantum-program* 1))
-
-(defparameter *answer* (amplitudes (car *system*)))
