@@ -9,8 +9,8 @@
 (defun process (data)
   (print data))
 
-(defun square(x)
-  (* x x))
+(defun square (n)
+  (* n n))
 
 (defparameter *init* #(1 2 3 4 5 6 7 8))
 
@@ -232,3 +232,9 @@ F matrix:
 
 
 ;;6/24/2017:gcc call_function.c -I/usr/include/python2.7 -lpython2.7 ; ./a.out
+
+(defun run-python ()
+   (clesh:script "python /app/simulators/numpy-test.py"))
+
+(defun ls ()
+  (clesh:script "ls"))

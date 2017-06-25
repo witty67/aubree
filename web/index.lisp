@@ -97,7 +97,10 @@ TODO: cleanup code."
   (concatenate 'string "The square of your input is: " (write-to-string (simulators:square (read-from-string data)))))
 
 (smackjack:defun-ajax echo-fact (data) (*ajax-processor* :callback-data :response-text)
-  (concatenate 'string "The factorial of your input is: " (write-to-string (simulators:fact (read-from-string data)))))
+		      (concatenate 'string "The factorial of your input is: " (write-to-string (simulators:fact (read-from-string data)))))
+
+(smackjack:defun-ajax echo-numpy (data) (*ajax-processor* :callback-data :response-text)
+  (concatenate 'string "Output of python program: "  (simulators:run-python)))
 
 (hunchentoot:define-easy-handler (say-yo2 :uri "/") ()
   (cl-who:with-html-output-to-string (s)
@@ -119,6 +122,12 @@ TODO: cleanup code."
 
 	      (defun on-click-fact ()
                 (chain smackjack (echo-fact (chain document
+                                              (get-element-by-id "data-fact")
+                                              value)
+					    callback)))
+
+	      (defun on-click-numpy ()
+                (chain smackjack (echo-numpy (chain document
                                               (get-element-by-id "data-fact")
                                               value)
                                        callback)))
@@ -150,6 +159,10 @@ TODO: cleanup code."
 	       (:p (:button :type "button"
                    :onclick (ps-inline (on-click-fact))
                    "Submit!"))
+
+	       (:p (:button :type "button"
+                   :onclick (ps-inline (on-click-numpy))
+                   "python-test"))
 
 	      ; (:p "Click Run Grover to run Grover's Algorithm")
 	       ;(:p (:input :id "data" :type "text"))
