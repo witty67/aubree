@@ -1,10 +1,9 @@
 (in-package :aubree)
 
-(defparameter *dispatch-table* "")
+
 (defparameter *data* "")
 ;; Utils
 (defun heroku-getenv (target)
-  #+ccl (ccl:getenv target)
   #+sbcl (sb-posix:getenv target))
 
 
@@ -68,6 +67,8 @@ TODO: cleanup code."
 
 (push (hunchentoot:create-folder-dispatcher-and-handler "/static/" (concatenate 'string (heroku-slug-dir) "/public/")) hunchentoot:*dispatch-table*)
 
+
+
 (hunchentoot:define-easy-handler (hello-sbcl :uri "/placeholder") ()
   (cl-who:with-html-output-to-string (s)
     (:html
@@ -102,6 +103,9 @@ TODO: cleanup code."
 (smackjack:defun-ajax echo-numpy (data) (*ajax-processor* :callback-data :response-text)
   (concatenate 'string "Output of python program: "  (simulators:run-python)))
 
+(smackjack:defun-ajax echo-check-file (data) (*ajax-processor* :callback-data :response-text)
+  (concatenate 'string "File location: "  (namestring (probe-file "~/quicklisp/local-projects/aubree/simulators"))))
+
 (hunchentoot:define-easy-handler (say-yo2 :uri "/") ()
   (cl-who:with-html-output-to-string (s)
    (:html
@@ -129,6 +133,12 @@ TODO: cleanup code."
 	      (defun on-click-numpy ()
                 (chain smackjack (echo-numpy (chain document
                                               (get-element-by-id "data-fact")
+                                              value)
+					     callback)))
+
+	      (defun on-click-check-file ()
+                (chain smackjack (echo-check-file (chain document
+                                              (get-element-by-id "check-file")
                                               value)
                                        callback)))
 
@@ -163,6 +173,12 @@ TODO: cleanup code."
 	       (:p (:button :type "button"
                    :onclick (ps-inline (on-click-numpy))
                    "python-test"))
+
+	       (:p (:button :type "button"
+                   :onclick (ps-inline (on-click-check-file))
+                   "file-test"))
+
+	       (:a :href "static/hello.txt" "hello")
 
 	      ; (:p "Click Run Grover to run Grover's Algorithm")
 	       ;(:p (:input :id "data" :type "text"))

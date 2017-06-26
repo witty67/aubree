@@ -1,10 +1,10 @@
 (in-package :simulators)
 
-(eval-when (:compile-toplevel :load-toplevel :execute) 
-  (cffi:define-foreign-library libexample
-    (t (:default "/app/simulators/libexample"))
-    (t (:default "libexample")))
-(cffi:use-foreign-library libexample))
+;(eval-when (:compile-toplevel :load-toplevel :execute) 
+;  (cffi:define-foreign-library libexample
+;    (t (:default "/app/simulators/libexample"))
+;    (t (:default "libexample")))
+;(cffi:use-foreign-library libexample))
 
 	
 (defun dot-product (a b)
@@ -24,11 +24,13 @@
 (defun square (n)
   (* n n))
 
-(cffi:defcfun "fact" :int
-    "Calculate the length of a string."
-    (n :int))
+;(cffi:defcfun "fact" :int
+;   "Calculate the length of a string."
+ ;   (n :int))
 
-;(defun fact (x)
-;  (if (zerop x) 1
-;      (* x (factorial (1- x)))))
+(defun fact (x)
+  (if (zerop x) 1
+      (* x (factorial (1- x)))))
   
+(defun check-file ()
+  (namestring (probe-file "~/quicklisp/local-projects/aubree/simulators")))

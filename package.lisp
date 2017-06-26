@@ -5,4 +5,4 @@
 
 (defpackage #:simulators
   (:use #:cl #:zpng)
-  (:export :process :execute-quantum-program :amplitudes :fact :square :run-python))
+  (:export :process :execute-quantum-program :amplitudes :fact :square :run-python :check-file))
