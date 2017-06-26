@@ -1,0 +1,77 @@
+What i've been doing: Trying to undertand topological quantum computing, but i'm abandoning it because it is currently not practicle.
+
+Universal gates: Hadamard, phase rotation(pi/8 gate) and cnot
+	  	 Pauli x,y,z, and CNOT
+
+Faster quantum chemistry simulation on
+fault-tolerant quantum computers
+
+Techniques: Density functional theory
+polynomially tractable approximate quantum chemistry methods.
+
+
+Quantum Fourier transform: Provides an estimate of an energy eigen value
+
+Any arbitrary single-qubit gate can be produced using three distinct phase rotations and two hadamard gates
+
+
+One error corrected qubit requires 1000 faulty physical qubits
+
+
+Fault tolerant phase rotations
+
+Phase kickback
+
+Description: Approximates arbitrary phase rotation via controlled addition applied to the |y^(k)> ancilla registers
+Advantages: Trivial to compile. Circuit depth is 0(log epsilon) or 0(log log epsilon)
+Disadvantages: Resource costs are 2-3X higher than Fowler sequences
+
+Solovay-Kitaev sequence:
+Descrition:Approximates arbitrary rotation with a sequence of fundanmental gates
+Advantages: Polynomial-time compiling algorithm. No logical ancilla states
+Disadvantages: Dramatically more expensive in quantum resources than alternatives.
+
+Fowler sequence
+Description: Approximates arbitrary rotation with a sequence of fundanmental gates. Depth is 0(log e)
+Advantages: Minimal-depth sequences. No logical ancilla states
+Disadvantages: Sequence determination algorithms has exponential complexity and becomes infeassible for high accuracy rotations
+
+
+PAR
+Description: Approximates arbitrary rotation with probabilistic circuit using ancilla and measurement
+Advantages: Constant average depth(four gates) for any phase rotation
+Disadvatages: Require logical ancillas which must be pre-computed.
+
+
+Figure 6: |t> is the control bit |x1> |x2> are molecular orbitals
+
+QASM CODE:
+
+qubit q0
+qubit q1
+qubit q2
+
+h q1
+h2 q2
+cnot q1,q2
+
+h q1
+h q2
+
+h q1
+s q1 ;;S is hermitian conjugate
+h q1
+
+h q2
+s q2
+h q2
+
+cnot q1,q2
+
+
+cnot q1,q2
+
+
+
+
+New Goal:Run physics simulations on a quantum computer online
