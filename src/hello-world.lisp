@@ -26,9 +26,9 @@ TODO: cleanup code."
   (cl-who:with-html-output-to-string (s)
     (:html
      (:head
-      (:title "Heroku CL Example App"))
+      (:title "Quantum Computing Playground"))
      (:body
-      (:h1 "Heroku CL Example App")
+      (:h1 "List of Experiments")
       (:h3 "Using")
       (:ul
        (:li (format s "~A ~A" (lisp-implementation-type) (lisp-implementation-version)))
@@ -38,6 +38,10 @@ TODO: cleanup code."
        (:a :href "static/lisp-glossy.jpg" (:img :src "static/lisp-glossy.jpg" :width 100)))
       (:div
        (:a :href "static/index.html" "hello"))
+
+      (:div
+       (:a :href "/index.html" "prototypes"))
+      
       (:h3 "App Database")
       (:div
        (:pre "SELECT version();"))

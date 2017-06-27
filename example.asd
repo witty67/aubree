@@ -4,12 +4,31 @@
 (in-readtable clesh:syntax)
 (asdf:defsystem #:example
   :serial t
-  :description "Example cl-heroku application"
+  :description "A Quantum Computing Playground"
   :depends-on (#:hunchentoot
 	       #:cl-who
-	       #:postmodern)
+	       #:postmodern
+	       #:parenscript
+	       #:cl-fad
+	       #:smackjack)
   :components ((:file "package")
 	       (:module :src
 			:serial t      
-			:components ((:file "hello-world")))))
+			:components ((:file "hello-world")))
+
+	       (:module :simulators
+			:serial t      
+			:components (
+				     
+				     (:file "qgame")
+				     (:file "braiding")
+				     (:file "em")))
+
+	       (:module :web
+			:serial t      
+			:components (
+				     (:file "topological-intro")
+				     (:file "index")))
+
+	       ))
 
