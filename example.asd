@@ -1,5 +1,5 @@
 (ql:quickload '(hunchentoot cl-who postmodern simple-date parenscript cl-fad
-		fiveam css-lite cl-json smackjack zpng l-math cffi clesh cl-forest))
+		prove css-lite cl-json smackjack zpng l-math cffi clesh cl-forest))
 (use-package 'named-readtables)
 (in-readtable clesh:syntax)
 (asdf:defsystem #:example
@@ -31,7 +31,24 @@
 			:serial t      
 			:components ((:file "hello-world")))
 
+	       (:module :tests
+			:serial t      
+			:components ((:file "tests")
+				     (:file "run-tests")))
+
 	       
 
-	       ))
+	       )
+  :in-order-to ((test-op (test-op aubree-test)))
+  )
+
+
+(defsystem aubree-test
+  :depends-on (:example
+               :prove)
+  :defsystem-depends-on (:prove-asdf)
+  :components
+  ((:test-file "tests/tests"))
+  :perform (test-op :after (op c)
+                    (funcall (intern #.(string :run) :prove) c)))
 

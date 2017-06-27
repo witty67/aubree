@@ -15,8 +15,8 @@
 	    (cons  (- (* (third a) (first b)) (* (first a) (third b))) '(j))
 	    (cons  (- (* (first a) (second b)) (* (second a) (first b))) '(k))))
 
- (defun lorentz (q E v B)
-   (* q (+ E (cross-product v B))))
+; (defun lorentz (q E v B)
+ ;  (* q (+ E (cross-product v B))))
 
 (defun force (q E v B)
   (lorentz q E v b))

@@ -9,3 +9,8 @@
 
 (defpackage #:example
   (:use #:cl))
+
+(defpackage tests
+  (:use :cl
+        :prove
+	:simulators))
