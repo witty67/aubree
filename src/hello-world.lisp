@@ -40,7 +40,7 @@ TODO: cleanup code."
        (:a :href "static/index.html" "hello"))
 
       (:div
-       (:a :href "/index.html" "prototypes"))
+       (:a :href "/prototypes" "prototypes"))
       
       (:h3 "App Database")
       (:div

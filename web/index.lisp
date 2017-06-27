@@ -157,8 +157,8 @@
 		
 ))))  
       
-(setq *dispatch-table* (list 'dispatch-easy-handlers
-                             (create-ajax-dispatcher *ajax-processor*)))
+;(setq *dispatch-table* (list 'dispatch-easy-handlers
+ ;                            (create-ajax-dispatcher *ajax-processor*)))
 
 (hunchentoot:define-easy-handler (upload :uri "/upload") (uploaded)
     (rename-file (car uploaded)

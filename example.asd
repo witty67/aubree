@@ -12,6 +12,21 @@
 	       #:cl-fad
 	       #:smackjack)
   :components ((:file "package")
+
+	       (:module :simulators
+			:serial t      
+			:components (
+				     
+				     (:file "qgame")
+				     (:file "braiding")
+				     (:file "em")))
+
+	       (:module :web
+			:serial t      
+			:components (
+				     (:file "topological-intro")
+				     (:file "index")))
+	       
 	       (:module :src
 			:serial t      
 			:components ((:file "hello-world")))
