@@ -1,5 +1,5 @@
 (ql:quickload '(hunchentoot cl-who postmodern simple-date parenscript cl-fad
-		fiveam css-lite cl-json smackjack zpng l-math cffi clesh))
+		fiveam css-lite cl-json smackjack zpng l-math cffi clesh cl-forest))
 (use-package 'named-readtables)
 (in-readtable clesh:syntax)
 
