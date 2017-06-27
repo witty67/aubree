@@ -1,1 +1,1 @@
-(hunchentoot:start (make-instance 'hunchentoot:easy-acceptor :port 8083))
+(hunchentoot:start (make-instance 'hunchentoot:easy-acceptor :port 8082))
