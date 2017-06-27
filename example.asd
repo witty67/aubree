@@ -16,19 +16,7 @@
 			:serial t      
 			:components ((:file "hello-world")))
 
-	       (:module :simulators
-			:serial t      
-			:components (
-				     
-				     (:file "qgame")
-				     (:file "braiding")
-				     (:file "em")))
-
-	       (:module :web
-			:serial t      
-			:components (
-				     (:file "topological-intro")
-				     (:file "index")))
+	       
 
 	       ))
 
