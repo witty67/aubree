@@ -143,17 +143,17 @@
                 ;   :onclick (ps-inline (run-grover))
                  ;  "Run Grover"))
 	       
-	       (:p "Enter your program in the textbox and click Run to run it")
-	       (:p "<textarea id= \"program\" rows= \"4\" cols=\"50\" name=\"comment\" form=\"usrform\"></textarea>
-")
-		(:p (:button :type "button"
-                   :onclick (ps-inline (run-qgame))
-                   "Run!"))
+	       
+	       ;(:p "<textarea id= \"program\" rows= \"4\" cols=\"50\" name=\"comment\" form=\"usrform\"></textarea>")
+		;(:p (:button :type "button"
+                ;  :onclick (ps-inline (run-qgame))
+                 ;  "Run!"))
 
 		"<form enctype=\"multipart/form-data\" action=\"upload\" method=\"POST\">
- Upload your program as a file to run it: <input name=\"uploaded\" type=\"file\" /><br />
+ Upload your quantum program as a file to run it: <input name=\"uploaded\" type=\"file\" /><br />
  <input type=\"submit\" value=\"Upload\" />
  </form>"
+		(:p "Or, you could use the <a href=/editor\>\Online Text Editor</a>")
 		
 ))))  
       

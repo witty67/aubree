@@ -31,7 +31,7 @@
 			:serial t      
 			:components ((:file "hello-world")))
 
-	       (:module :tests
+	       (:module :utilities
 			:serial t      
 			:components ((:file "tests")
 				     (:file "run-tests")))
@@ -48,7 +48,7 @@
                :prove)
   :defsystem-depends-on (:prove-asdf)
   :components
-  ((:test-file "tests/tests"))
+  ((:test-file "utilities/tests"))
   :perform (test-op :after (op c)
                     (funcall (intern #.(string :run) :prove) c)))
 
