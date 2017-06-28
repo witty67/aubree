@@ -238,3 +238,8 @@ F matrix:
 
 (defun ls ()
   (clesh:script "ls"))
+
+(defun run-quil (program)
+  (cl-forest:run (quil program)
+                '(0 1)
+                10))

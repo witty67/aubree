@@ -10,7 +10,8 @@
 	       #:postmodern
 	       #:parenscript
 	       #:cl-fad
-	       #:smackjack)
+	       #:smackjack
+	       #:cl-forest)
   :components ((:file "package")
 
 	       (:module :simulators
@@ -34,7 +35,9 @@
 	       (:module :utilities
 			:serial t      
 			:components ((:file "tests")
-				     (:file "run-tests")))
+				     (:file "run-tests")
+				     (:file "utilities")
+				     (:file "setup")))
 
 	       
 

@@ -1,0 +1,8 @@
+Simulating Physics with computers Richard Feynman
+
+Pauli equation: Patricles spin with an external electromagnetic field only useful with spin-1/2 particles. Maybe this is what is used for Ion Trap Computers?
+
+Density matrix: A matrix that describes a quantum system in a statistical ensemble of several quantum states.
+
+
+Quantum theory, the Church-TUring principle and the universal Quantum computer: David Deutch
