@@ -2,7 +2,7 @@
 (defpackage :utilities
   (:use :cl
 	:cl-forest)
-  (:export :set-key))
+  (:export :set-key :set-key-1))
 
 (defpackage #:aubree
   (:use #:cl #:cl-who #:hunchentoot #:postmodern #:parenscript  #:cl-fad #:smackjack :cl-forest :utilities))
