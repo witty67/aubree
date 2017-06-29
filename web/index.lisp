@@ -47,8 +47,6 @@
 (css-maker)
 
 
-(defparameter *ajax-processor*
-  (make-instance 'ajax-processor :server-uri "/repl-api"))
 
 (smackjack:defun-ajax echo (data) (*ajax-processor* :callback-data :response-text)
   (concatenate 'string "The square of your input is: " (write-to-string (simulators:square (read-from-string data)))))
@@ -186,7 +184,6 @@
 ;;Loading other pages
 (topological-page)
 (editor)
-
 
 
 

@@ -243,3 +243,11 @@ F matrix:
   (cl-forest:run (quil program)
                 '(0 1)
                 10))
+
+(defun epr ()
+  (cl-forest:run (quil "H 0"
+                      "CNOT 0 1"
+                      "MEASURE 0 [0]"
+                      "MEASURE 1 [1]")
+                '(0 1)
+                10))
