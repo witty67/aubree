@@ -1,0 +1,25 @@
+Blueprint for a microwave trapped ion quantum computer
+
+Abstract
+Long-wavelength radiation quantum gates
+Modules control all operations as stand-alone units.
+Are constructed using silicon microfabrication techniques.
+
+Performs computation using long-wavelength radiation-based quantum gate technology
+
+Problems: Creation of strong magnetic field gradients and the requirement of calibration operations and well-controlled votages
+
+
+
+Ion transport between different modules.
+high error-threshold surface error correction code.
+Objects: Module
+
+1. Modules driven by a global laser and microwave fields, performing ion loading and ion shuttling, generate locally addresable magnetic fields as well as magnetic field gradients to perform signle and multiqubit gates. and feature on-ship photo detectors for state readout.
+
+2. Gate operations are controlled by on-chip electronics
+Modules can interact with other modules.
+
+3. Coulomb interaction between closely spaced ions makes conditional quantum gates with two or more qubits possible
+
+4. Coupling between internal states of trapped ions and their motion for mutliqubit gates is induced by electromagnetic radiation. Adding a static magnetic field exterts a force due to the magnetic moment associated with the qubit gates of the trapped ion.
