@@ -28,22 +28,12 @@ TODO: cleanup code."
      (:head
       (:title "Quantum Computing Playground"))
      (:body
-      (:h1 "List of Experiments")
-      (:h3 "Using")
-      (:ul
-       (:li (format s "~A ~A" (lisp-implementation-type) (lisp-implementation-version)))
-       (:li (format s "Hunchentoot ~A" hunchentoot::*hunchentoot-version*))
-       (:li (format s "CL-WHO")))
-      (:div
-       (:a :href "static/lisp-glossy.jpg" (:img :src "static/lisp-glossy.jpg" :width 100)))
+      (:h1 "Aubree")
+      
       (:div
        (:a :href "static/index.html" "hello"))
 
       (:div
        (:a :href "/prototypes" "prototypes"))
-      
-      (:h3 "App Database")
-      (:div
-       (:pre "SELECT version();"))
       ))))
 
