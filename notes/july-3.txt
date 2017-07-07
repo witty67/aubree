@@ -1,0 +1,42 @@
+Layered architecture for Quantum Computing
+
+1. Quantum dots
+Layers
+1: Physical: Hardware aparatus including physical qubits and control operations.
+Interface: QND Readout, Physical Qubit, Host System, 1-Qubit Gate, 2-Qubit Gate
+
+2: Virtual: Open-loop error-cancelation like dynamic decoupling
+Interface: Measure Z-Basis, Measure X-Basis, Virtual Qubit, Virtual 1-qubit Gate, Virtual CNOT
+3: Quantum Error correction
+Interface: Logical Measurement, Logical Qubit, Logical CNOT, Injected Ancilla State
+4: Logical
+Application Measurement, Application Qubit, Application Gates
+5: Application
+
+Two layers meet at an interface which defines how they exchange instruction or the result of those instructions.
+
+
+Quantum Dots trap single electron whose spins are used to do the computation.
+
+A transverse magnetic field splits the spin levels into two metastable magnetic ground states, which will later form a two-level system for a virtual qubit.
+
+
+
+
+
+
+
+
+
+Layered Architecture for a Large Scale Trapped Ion Quantum Computer.
+
+Abstract: There is a blueprint for building a largescale quantum computer. This paer explores the architecture that will be neccessary to make it a full stack computer. It follows the layered architecture model. The poblem is that the quantum dot way is not that scalable because of the amount of lasers that are invloved, the paper talks about how they will use mirrors to do their computation, but i think that way super sucks tbh. That is why i will use the scalable ion trap quantum computer way.
+
+Comparisons
+
+For large scale ion trap
+2048-bit number shor factorization will take 110 days and 2 * 10^9 trapped ions
+Factoring 1024 bit will take 14 days with the same number of Ions
+
+For Quantum Dot:
+factoring 2048 will take 87712 logical qubits and factoring 1024 will take 93856 qubits. It will take 6144 application qubits. 4.54 * 10^8 quantum dots, It will take 1.81 days to do. The trapped ion takes more qubits and it also takes a longer amount of time which automatically means that the large scale Ion trap is easier to build.

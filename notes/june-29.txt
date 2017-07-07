@@ -23,3 +23,15 @@ Modules can interact with other modules.
 3. Coulomb interaction between closely spaced ions makes conditional quantum gates with two or more qubits possible
 
 4. Coupling between internal states of trapped ions and their motion for mutliqubit gates is induced by electromagnetic radiation. Adding a static magnetic field exterts a force due to the magnetic moment associated with the qubit gates of the trapped ion.
+
+
+
+There is an electric potential experienced by the ion when shuttled through junctions and between physically separate modules.
+
+
+
+For calculations: Single Qubit-Gate time 2.5 micro-seconds
+Two qubit times: 10 micro-seconds
+Ion separation and shuttling time: 15 microseconds for each ion
+Static magnetic field gradient ramp-up and rampdown time 5 microseconds each
+Error correction cycle time 235 microseconds

@@ -1,0 +1,1 @@
+A variational eigenvalue solver on a photonic quantum processor

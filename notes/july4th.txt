@@ -1,0 +1,7 @@
+Toward a Superconducting quantum computer:
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3417795/pdf/pjab-86-275.pdf
+
+Josephson junction: A solid state device of macroscopic dimensions that has a structure in which two superconductors are weakly coupled alllowing a cooper pair support
+
+You can create a superposition when a single photon passes through a double slit  resulting in an interference pattern or use can use a squid(superconducting quantum interference device) but there will not be a quantum superposition becasue the currents are not in a quantum state
+
