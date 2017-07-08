@@ -62,7 +62,8 @@
 
 (hunchentoot:define-easy-handler (say-yo2 :uri "/prototypes") ()
   (cl-who:with-html-output-to-string (s)
-   (:html
+    (:html
+     (cl-who:str example:*google-analytics*)
               (:head
 	       (:title "Aubree")
 	      (str (generate-prologue *ajax-processor*))
@@ -175,6 +176,7 @@
 (hunchentoot:define-easy-handler (tutorial1 :uri "/tutorial1") ()
   (with-html-output-to-string (s)
     (:html
+     (cl-who:str example:*google-analytics*)
      (:head (:title "Parenscript tutorial: 1st example"))
      (:body (:h2 "Parenscript tutorial: 1st example")
             "Please click the link below." :br

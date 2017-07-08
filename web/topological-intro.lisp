@@ -7,6 +7,7 @@
 (defun topological-page () (hunchentoot:define-easy-handler (tutorial3 :uri "/topological-intro") ()
   (cl-who:with-html-output-to-string (s)
     (:html
+     (cl-who:str example:*google-analytics*)
      (:head
       (:title "Parenscript tutorial: 2nd example")
       (:script :type "text/javascript"
@@ -28,10 +29,9 @@
 
 (defun editor () (hunchentoot:define-easy-handler (editor :uri "/editor") ()
   (cl-who:with-html-output-to-string (s)
-   (:html
-    (:head
-     
-	       
+    (:html
+     (cl-who:str example:*google-analytics*)
+    (:head       
 	      (str (generate-prologue *ajax-processor*))
 	      (:script :type "text/javascript"
           (str
