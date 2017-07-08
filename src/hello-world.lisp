@@ -221,9 +221,6 @@ TODO: cleanup code."
   (push (create-static-file-dispatcher-and-handler
          "/retro.css" "static/retro.css") *dispatch-table*))
 
-(defun publish-static-content-temp ()
-  )
-
 (hunchentoot:define-easy-handler (hello-sbcl :uri "/") ()
   (cl-who:with-html-output-to-string (s)   
     (:html
@@ -244,4 +241,4 @@ TODO: cleanup code."
 
 
 (publish-static-content)
-(start-server 8080)
+(when (string= (heroku-slug-dir) "/home/vtomole") (start-server 8080))
