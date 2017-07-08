@@ -82,10 +82,10 @@
             (:title ,title)
             (:link :type "text/css"
                    :rel "stylesheet"
-                   :href "/retro.css"))
+                   :href "static/retro.css"))
            (:body
             (:div :id "header" ; Retro games header
-                  (:img :src "/logo.jpg"
+                  (:img :src "static/logo.jpg"
                         :alt "Commodore 64"
                         :class "logo")
                   (:span :class "strapline"
@@ -106,13 +106,13 @@
             (:title ,title)
             (:link :type "text/css"
                    :rel "stylesheet"
-                   :href "/retro.css")
+                   :href "static/retro.css")
             ,(when script
                `(:script :type "text/javascript"
                          (str ,script))))
            (:body
             (:div :id "header" ; Retro games header
-                  (:img :src "/logo.jpg"
+                  (:img :src "static/logo.jpg"
                         :alt "Commodore 64"
                         :class "logo")
                   (:span :class "strapline"
@@ -199,7 +199,8 @@
   #+sbcl (sb-posix:getenv target))
 
 (defun heroku-slug-dir ()
-  (heroku-getenv "HOME"))
+  (if (string= (heroku-getenv "HOME") "/home/vtomole") "/home/vtomole/quicklisp/local-projects/aubree" (heroku-getenv "HOME")))
+  
 
 (defun db-params ()
   "Heroku database url format is postgres://username:password@host:port/database_name.
@@ -216,10 +217,11 @@ TODO: cleanup code."
 
 (push (hunchentoot:create-folder-dispatcher-and-handler "/static/" (concatenate 'string (heroku-slug-dir) "/public/")) hunchentoot:*dispatch-table*)
 
-(push (create-static-file-dispatcher-and-handler
-         "/logo.jpg" "static/Commodore64.jpg") *dispatch-table*)
-  (push (create-static-file-dispatcher-and-handler
-         "/retro.css" "static/retro.css") *dispatch-table*))
+;(push (create-static-file-dispatcher-and-handler
+ ;        "/logo.jpg" "static/Commodore64.jpg") *dispatch-table*)
+ ; (push (create-static-file-dispatcher-and-handler
+					;        "/retro.css" "static/retro.css") *dispatch-table*)
+)
 
 (hunchentoot:define-easy-handler (hello-sbcl :uri "/") ()
   (cl-who:with-html-output-to-string (s)   
@@ -241,4 +243,4 @@ TODO: cleanup code."
 
 
 (publish-static-content)
-(when (string= (heroku-slug-dir) "/home/vtomole") (start-server 8080))
+(when (string= (heroku-slug-dir) "/home/vtomole/quicklisp/local-projects/aubree") (start-server 8080))
