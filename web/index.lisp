@@ -186,6 +186,7 @@
 ;;Loading other pages
 (topological-page)
 (editor)
+(cover)
 
 
 
