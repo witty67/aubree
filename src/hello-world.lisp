@@ -55,11 +55,6 @@
 (defun start-server (port)
   (start (make-instance 'easy-acceptor :port port)))
 
-(defun publish-static-content-temp ()
-  (push (create-static-file-dispatcher-and-handler
-         "/logo.jpg" "static/Commodore64.jpg") *dispatch-table*)
-  (push (create-static-file-dispatcher-and-handler
-         "/retro.css" "static/retro.css") *dispatch-table*))
 
 ;; DSL for our web pages
 ;; =====================
@@ -222,11 +217,12 @@ TODO: cleanup code."
 (push (hunchentoot:create-folder-dispatcher-and-handler "/static/" (concatenate 'string (heroku-slug-dir) "/public/")) hunchentoot:*dispatch-table*)
 
 (push (create-static-file-dispatcher-and-handler
-         "/logo.jpg" "public/Commodore64.jpg") *dispatch-table*)
+         "/logo.jpg" "static/Commodore64.jpg") *dispatch-table*)
   (push (create-static-file-dispatcher-and-handler
-         "/retro.css" "public/retro.css") *dispatch-table*)
-  
-)
+         "/retro.css" "static/retro.css") *dispatch-table*))
+
+(defun publish-static-content-temp ()
+  )
 
 (hunchentoot:define-easy-handler (hello-sbcl :uri "/") ()
   (cl-who:with-html-output-to-string (s)   
@@ -247,5 +243,5 @@ TODO: cleanup code."
       ))))
 
 
-(publish-static-content-temp)
-;(start-server 8080)
+(publish-static-content)
+(start-server 8080)
