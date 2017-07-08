@@ -34,8 +34,13 @@ TODO: cleanup code."
     (list database user password host)))
 
 ;; Handlers
+(defun publish-static-content ()
 
 (push (hunchentoot:create-folder-dispatcher-and-handler "/static/" (concatenate 'string (heroku-slug-dir) "/public/")) hunchentoot:*dispatch-table*)
+
+(push (hunchentoot:create-static-file-dispatcher-and-handler
+       "/retro.css" "public/bootstrap/css/retro.css") hunchentoot:*dispatch-table*)
+)
 
 (hunchentoot:define-easy-handler (hello-sbcl :uri "/") ()
   (cl-who:with-html-output-to-string (s)   
@@ -45,7 +50,9 @@ TODO: cleanup code."
       (:title "Quantum Computing Playground"))
      (:body
       (:h1 "Aubree")
-      
+      (:link :type "text/css"
+                   :rel "stylesheet"
+:href "/retro.css")
       (:div
        (:a :href "static/index.html" "hello"))
 
@@ -54,3 +61,4 @@ TODO: cleanup code."
       ))))
 
 
+;;(publish-static-content)
