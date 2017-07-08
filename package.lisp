@@ -12,7 +12,7 @@
   (:export :process :execute-quantum-program :amplitudes :fact :square :run-python :cl-forest :epr))
 
 (defpackage #:example
-  (:use #:cl)
+  (:use :cl :cl-who :hunchentoot :parenscript :cl-mongo)
   (:export :*google-analytics*))
 
 (defpackage tests
