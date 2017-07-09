@@ -33,7 +33,7 @@
                 <a class='nav-link' href='#'>Blog</a>
                 <a class='nav-link' href='#'>Resources</a>
                 <a class='nav-link' href='#'>Sign In</a>
-                <a class='nav-link' href='#'>Forum</a>
+                <a class='nav-link' href='/forum'>Forum</a>
               </nav>
             </div>
           </div>
@@ -333,7 +333,7 @@ TODO: cleanup code."
 
 (defparameter test-comment2
   (make-instance 'comment
-		 :author "vtomole" :email "vtomole@gmail.com" :subject "Stop being a"
+		 :author "vtomole" :email "vtomole@gmail.com" :subject "Hey welcome to this board"
 		 :date-and-time (get-universal-time)))
 
 ;(defmethod echo ((comment comment))
@@ -364,7 +364,7 @@ TODO: cleanup code."
 (defparameter test-comment3
   (make-instance 'comment
 		 :subject "Hey what's up guys"
-		 :body "hacker news.com"
+		 :body "This feels like the usernet"
 		 :date-and-time (get-universal-time)))
 
 (defparameter test-comment4
