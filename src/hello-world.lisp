@@ -311,11 +311,115 @@ TODO: cleanup code."
        (:a :href "/prototypes" "prototypes"))
       )))))
 
+
+
 (defun cover()
   (hunchentoot:define-easy-handler (hello-sbcl :uri "/") ()
   (cl-who:with-html-output-to-string (s)   
-     (cl-who:str *cover-page*))))
+    (cl-who:str *cover-page*))))
+
+(defclass comment ()
+   ((author :reader author :initarg :author :initform nil)
+    (email :reader email :initarg :email :initform nil)
+    (subject :reader subject :initarg :subject :initform nil)
+    (body :reader body :initarg :body :initform nil)
+    (date-and-time :reader date-and-time :initarg :date-and-time)))
+
+(defparameter test-comment
+	   (make-instance 'comment
+			  :author "Victory" :email "vtomole@iastate.edu" :subject "First one"
+			  :body "Hey folks"
+			  :date-and-time (get-universal-time)))
+
+(defparameter test-comment2
+  (make-instance 'comment
+		 :author "vtomole" :email "vtomole@gmail.com" :subject "Stop being a"
+		 :date-and-time (get-universal-time)))
+
+;(defmethod echo ((comment comment))
+;  (cl-who:with-html-output-to-string (*standard-output* nil :indent t)
+;		      (htm (:div :class "comment"
+;				 (echo-header comment)
+;					(:span :class "body"
+;					       (:p (cl-who:str (body comment))))))))
+(defmethod echo ((a-comment comment))
+  (with-html-output-to-string (*standard-output* nil :indent t)
+    (with-slots (author email subject body date-and-time) a-comment
+      (htm (:div :class "comment"
+                 (:span :class "header" 
+                        (str author) (str email) 
+                        (str date-and-time) (str subject))
+                 (:span :class "body" 
+                        (:p (str body))))))))
+
+(defclass thread ()
+  ((board :reader board :initarg :board)
+   (comments :accessor comments :initarg :comments)))
+
+(defparameter test-thread
+  (make-instance 'thread
+		 :board "a"
+		 :comments (list test-comment test-comment2)))
+
+(defparameter test-comment3
+  (make-instance 'comment
+		 :subject "Hey what's up guys"
+		 :body "hacker news.com"
+		 :date-and-time (get-universal-time)))
+
+(defparameter test-comment4
+  (make-instance 'comment
+		 :body "Scheme is awesome!"
+		 :date-and-time (get-universal-time)))
+
+(setf (comments test-thread) 
+           (append (comments test-thread) 
+                   (list test-comment3 test-comment4)))
+
+;(defmethod echo ((thread thread))
+ ; (let ((first-comment (car (comments thread))))
+  ;  (cl-who:with-html-output (*standard-output* nil :indent t)
+;	(htm (:div :class "thread"
+;		   (echo-header comment)
+;		   (:span :class "body"
+;			  (:p (cl-who:str (body first-comment)))
+;		   (dolist (r (cdr (comments thread)))
+					;		     (cl-who:str (echo r)))))))))
+
+(defmethod echo ((thread thread))
+  (let ((first-comment (car (comments thread))))
+    (cl-who:with-html-output (*standard-output* nil :indent t)
+      (with-slots (author email subject body date-and-time) first-comment
+        (htm (:div :class "thread"
+                   (:span :class "header" 
+                          (cl-who:str author) (cl-who:str email) 
+                          (cl-who:str date-and-time) (cl-who:str subject))
+                   (:span :class "body" 
+                          (:p (cl-who:str body)))
+                   (dolist (r (cdr (comments thread)))
+                     (cl-who:str (echo r)))))))))
+
+(defmethod echo-header ((comment comment))
+  (cl-who:with-html-output (*standard-output*)
+    (:span :class "header"
+	   (dolist (elem '(author email date-and-time subject))
+	     (htm (:span :class (format nil "~(~a~)" elem) (cl-who:str (slot-value comment elem))))))))
+
+
+(defun forum () (hunchentoot:define-easy-handler (forum :uri "/forum") ()
+		  (cl-who:with-html-output-to-string (*standard-output* nil :prologue t :indent t)
+		    
+    (:html :xmlns "http://www.w3.org/1999/xhtml" :xml\:lang "en" :lang "en"
+      (cl-who:str *google-analytics*)
+      (:head
+       (:meta :http-equiv "Content-Type" :content "text/html;charset=utf-8"
+	      (:title "Message Board"))
+       (:link :rel "stylesheet" :type "text/css" :href "static/bootstrap/css/forum.css")
+       (:body (echo test-thread)))))))
+;(defun sign-in () (hunchentoot:define-easy-handler (login-page :uri "/sign-in") ()
+  ;(formlets:page-template (show-formlet login))))
 (index)
 (cover)
+(forum)
 (publish-static-content)
 (when (string= (heroku-slug-dir) "/home/vtomole/quicklisp/local-projects/aubree") (start-server 8080))
