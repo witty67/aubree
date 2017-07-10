@@ -1,5 +1,5 @@
 (in-package :example)
-(pomo:connect-toplevel "aubreedb" "vtomole" "19962014V" "localhost")
+;(pomo:connect-toplevel "aubreedb" "vtomole" "19962014V" "localhost")
 (defparameter *cover-page* "
 <!DOCTYPE html>
 <html lang='en'>
@@ -306,12 +306,17 @@ TODO: cleanup code."
                    :rel "stylesheet"
 :href "/retro.css")
       (:div
-       (cl-who:str (pomo:query "select 22, 'vtomole', 4.5"))
+       ;(cl-who:str (pomo:query "select 22, 'vtomole', 4.5"))
        (:a :href "static/index.html" "hello"))
 
       (:div
        (:a :href "/prototypes" "prototypes"))
-      )))))
+      (:h3 "App Database")
+      (:div
+       (:pre "SELECT version();"))
+      (:div (format s "~A" (postmodern:with-connection (db-params)
+(postmodern:query "select version()")))
+      ))))))
 
 
 
@@ -424,4 +429,4 @@ TODO: cleanup code."
 (cover)
 (forum)
 (publish-static-content)
-;(when (string= (heroku-slug-dir) "/home/vtomole/quicklisp/local-projects/aubree") (start-server 8080))
+(when (string= (heroku-slug-dir) "/home/vtomole/quicklisp/local-projects/aubree") (start-server 8080))
