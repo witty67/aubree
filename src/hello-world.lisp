@@ -378,16 +378,14 @@ TODO: cleanup code."
 		 :body "Scheme is awesome!"
 		 :date-and-time (get-universal-time)))
 
-(setf (comments test-thread) 
-           (append (comments test-thread) 
-                   (list test-comment3 test-comment4)))
-
-
-
 (defparameter test-thread
   (make-instance 'thread
 		 :board "a"
 		 :comments (list test-comment3 test-comment4)))
+
+(setf (comments test-thread) 
+           (append (comments test-thread) 
+                   (list test-comment3 test-comment4)))
 
 (defparameter test-thread2
   (make-instance 'thread
