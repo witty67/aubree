@@ -163,6 +163,7 @@
                          "Vote on your favourite Retro Game"))
             ,@body))))
 
+
 (defmacro standard-page ((&key title script) &body body)
   "All pages on the Retro Games site will use the following macro;
    less to type and a uniform look of the pages (defines the header
@@ -359,15 +360,12 @@ TODO: cleanup code."
                         (str date-and-time) (str subject))
                  (:span :class "body" 
                         (:p (str body))))))))
-
+(defclass board()
+  ((name :reader name :initarg :name)
+   (threads :accessor threads :initarg :threads :initform nil)))
 (defclass thread ()
   ((board :reader board :initarg :board)
    (comments :accessor comments :initarg :comments)))
-
-(defparameter test-thread
-  (make-instance 'thread
-		 :board "a"
-		 :comments (list test-comment test-comment2)))
 
 (defparameter test-comment3
   (make-instance 'comment
@@ -384,6 +382,26 @@ TODO: cleanup code."
            (append (comments test-thread) 
                    (list test-comment3 test-comment4)))
 
+
+
+(defparameter test-thread
+  (make-instance 'thread
+		 :board "a"
+		 :comments (list test-comment3 test-comment4)))
+
+(defparameter test-thread2
+  (make-instance 'thread
+		 :board "a"
+		 :comments (list test-comment test-comment2)))
+
+(defparameter test-board (make-instance 'board
+					:name "a"
+					:threads (list test-thread
+						       test-thread2
+						       test-thread
+						       test-thread2
+						       test-thread)))
+
 ;(defmethod echo ((thread thread))
  ; (let ((first-comment (car (comments thread))))
   ;  (cl-who:with-html-output (*standard-output* nil :indent t)
@@ -393,6 +411,21 @@ TODO: cleanup code."
 ;			  (:p (cl-who:str (body first-comment)))
 ;		   (dolist (r (cdr (comments thread)))
 					;		     (cl-who:str (echo r)))))))))
+(defmethod summarize ((thread thread) &optional (preview-comment-count 5))
+  (let* ((preview-comments (last (cdr (comments thread)) preview-comment-count))
+         (omitted-count (- (length (cdr (comments thread))) (length preview-comments)))
+         (first-comment (car (comments thread))))
+    (with-html-output (*standard-output* nil :indent t)
+      (:div :class "thread"
+            (echo-header first-comment)
+            (:span :class "body" 
+                   (:p (str (body first-comment))))
+            (when (> omitted-count 0)
+              (htm (:p :class "omitted" 
+                       (str (format nil "~a comments omitted (and we don't do pictures yet)" 
+                                    omitted-count)))))
+            (dolist (r preview-comments)
+              (str (echo r)))))))
 
 (defmethod echo ((thread thread))
   (let ((first-comment (car (comments thread))))
@@ -414,20 +447,100 @@ TODO: cleanup code."
 	     (htm (:span :class (format nil "~(~a~)" elem) (cl-who:str (slot-value comment elem))))))))
 
 
+(defmethod echo ((board board))
+  (with-html-output (*standard-output* nil :indent t)
+    (:h1 (str (name board))) (:hr)
+    (dolist (thread (threads board))
+      (summarize thread))))
+
+(defmacro page-template ((&key title) &body body)
+  `(with-html-output-to-string (*standard-output* nil :prologue t :indent t)
+     (:html :xmlns "http://www.w3.org/1999/xhtml" :xml\:lang "en" :lang "en"
+	    (:head (:meta :http-equiv "Content-Type" :content "text/html;charset=utf-8")
+(:title (str ,title))
+       (:link :rel "stylesheet" :type "text/css" :href "static/bootstrap/css/forum.css"))
+(:body ,@body))))
+
 (defun forum () (hunchentoot:define-easy-handler (forum :uri "/forum") ()
-		  (cl-who:with-html-output-to-string (*standard-output* nil :prologue t :indent t)
-		    
-    (:html :xmlns "http://www.w3.org/1999/xhtml" :xml\:lang "en" :lang "en"
-      (cl-who:str *google-analytics*)
-      (:head
-       (:meta :http-equiv "Content-Type" :content "text/html;charset=utf-8"
-	      (:title "Message Board"))
-       (:link :rel "stylesheet" :type "text/css" :href "static/bootstrap/css/forum.css")
-       (:body (echo test-thread)))))))
+		  (page-template (:title "Forum")
+					(echo test-board)
+		    )))
+
+
+(defun thread () (hunchentoot:define-easy-handler (thread :uri "/thread") ()
+		    (page-template (:title (board test-thread))
+					   (show-formlet post-comment-form)
+       (echo test-thread))))
+
+(formlets:define-formlet (post-comment-form)
+    ((author formlets:text) (email formlets:text) (subject formlets:text) (body formlets:textarea) ;(captcha formlets:recaptcha)
+     )
+  (let ((new-comment (make-instance 'comment
+                                    :author author :email email 
+                                    :subject subject :body body
+                                    :date-and-time (get-universal-time))))
+    (setf (comments test-thread)
+          (append (comments test-thread) (list new-comment)))
+    (comment-create :author (author new-comment) :email (email new-comment) :subject (subject new-comment) :body (body new-comment) :comment-date (encode-date 2017 7 11))
+    (redirect "/thread")))
+
+(defclass movie ()
+    ((id :col-type serial :reader movie-id)
+     (title :col-type string :initarg :title :accessor movie-title)
+     (rating :col-type string :initarg :rating :accessor movie-rating)
+     (release-date :col-type date :initarg :release-date :accessor movie-release-date))
+    (:metaclass dao-class) 
+    (:keys id))
+
+(defclass comment-class ()
+    ((id :col-type serial :reader thread-id)
+     (author :col-type string :initarg :author :accessor comment-author)
+     (email :col-type string :initarg :email :accessor comment-email)
+     (subject :col-type string :initarg :subject :accessor comment-subject)
+     (body :col-type string :initarg :body :accessor comment-body)
+     (comment-date :col-type date :initarg :comment-date :accessor post-comment-date))
+    (:metaclass dao-class) 
+    (:keys id))
+
+;;CRUD
+(defmacro comment-create (&rest args)
+  `(with-connection (db-params)
+     (make-dao 'comment-class ,@args)))
+
+(defun comment-get-all ()
+  (with-connection (db-params)
+    (select-dao 'comment-class)))
+
+(defun comment-get (id)
+  (with-connection (db-params)
+    (select-dao 'comment-class id)))
+
+(defmacro comment-select (sql-test &optional sort)
+  `(with-connection (db-params)
+     (select-dao 'comment-class ,sql-test ,sort)))
+
+(defun comment-update (comment)
+  (With-connection (db-params)
+    (update-dao comment)))
+
+(defun comment-delete (comment)
+  (with-connection (db-params)
+    (delete-dao comment)))
+
+;(defclass comment ()
+;  ( (id :col-type serial :reader thread-id)
+;   (author :col-type string :initarg :author :accessor author)
+;   (email :col-type string :initarg :email :accessor email)
+;   (subject :col-type string :initarg :subject :accessor subject)
+;   (body :reader body :initarg :body :initform nil)
+;    (date-and-time :reader date-and-time :initarg :date-and-time))
+;  (:metaclass postmodern:dao-class)
+					;  (:keys id))
 ;(defun sign-in () (hunchentoot:define-easy-handler (login-page :uri "/sign-in") ()
   ;(formlets:page-template (show-formlet login))))
 (index)
 (cover)
 (forum)
+(thread)
 (publish-static-content)
-(when (string= (heroku-slug-dir) "/home/vtomole/quicklisp/local-projects/aubree") (start-server 8080))
+;(when (string= (heroku-slug-dir) "/home/vtomole/quicklisp/local-projects/aubree") (start-server 8080))
