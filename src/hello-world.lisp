@@ -527,6 +527,8 @@ TODO: cleanup code."
        (:link :rel "stylesheet" :type "text/css" :href "static/bootstrap/css/forum.css"))
 (:body ,@body))))
 
+
+
 (defun forum () (hunchentoot:define-easy-handler (forum :uri "/forum") ()
 		  (page-template (:title "Forum")
 					(echo test-board)
@@ -571,4 +573,4 @@ TODO: cleanup code."
 (forum)
 (thread)
 (publish-static-content)
-(when (string= (heroku-slug-dir) "/home/vtomole/quicklisp/local-projects/aubree") (start-server 8080))
+;(when (string= (heroku-slug-dir) "/home/vtomole/quicklisp/local-projects/aubree") (start-server 8080))
