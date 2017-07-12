@@ -302,7 +302,7 @@ TODO: cleanup code."
   (unless (table-exists-p ',name)
     (execute (dao-table-definition ',name)))))
 
-(create-table comment-class)
+
 
 (defclass movie ()
     ((id :col-type serial :reader movie-id)
@@ -567,6 +567,7 @@ TODO: cleanup code."
   ;(formlets:page-template (show-formlet login))))
 (index)
 (cover)
+(create-table comment-class)
 (forum)
 (thread)
 (publish-static-content)
