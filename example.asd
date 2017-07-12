@@ -1,5 +1,5 @@
 (ql:quickload '(hunchentoot cl-who postmodern simple-date parenscript cl-fad
-		prove css-lite cl-json smackjack zpng l-math cffi clesh cl-forest cl-mongo formlets))
+		prove css-lite cl-json smackjack zpng l-math cffi clesh cl-forest cl-mongo formlets postmodern))
 (use-package 'named-readtables)
 (in-readtable clesh:syntax)
 (asdf:defsystem #:example

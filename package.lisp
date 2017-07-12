@@ -12,8 +12,10 @@
   (:export :process :execute-quantum-program :amplitudes :fact :square :run-python :cl-forest :epr))
 
 (defpackage #:example
-  (:use :cl :cl-who :hunchentoot :parenscript :cl-mongo)
-  (:export :*google-analytics*))
+  (:use :cl :cl-who :hunchentoot :parenscript :formlets :postmodern :simple-date)
+  (:export :*google-analytics*)
+  (:shadowing-import-from :cl-mongo  :show)
+  (:shadowing-import-from :s-sql  :text))
 
 (defpackage tests
   (:use :cl
