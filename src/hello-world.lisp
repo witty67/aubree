@@ -1,47 +1,5 @@
 (in-package :example)
 
-(defclass movie ()
-    ((id :col-type serial :reader movie-id)
-     (title :col-type string :initarg :title :accessor movie-title)
-     (rating :col-type string :initarg :rating :accessor movie-rating)
-     (release-date :col-type date :initarg :release-date :accessor movie-release-date))
-    (:metaclass dao-class) 
-    (:keys id))
-
-(defclass comment-class ()
-    ((id :col-type serial :reader thread-id)
-     (author :col-type string :initarg :author :accessor comment-author)
-     (email :col-type string :initarg :email :accessor comment-email)
-     (subject :col-type string :initarg :subject :accessor comment-subject)
-     (body :col-type string :initarg :body :accessor comment-body)
-     (comment-date :col-type date :initarg :comment-date :accessor post-comment-date))
-    (:metaclass dao-class) 
-    (:keys id))
-
-;;CRUD
-(defmacro comment-create (&rest args)
-  `(with-connection (db-params)
-     (make-dao 'comment-class ,@args)))
-
-(defun comment-get-all ()
-  (with-connection (db-params)
-    (select-dao 'comment-class)))
-
-(defun comment-get (id)
-  (with-connection (db-params)
-    (select-dao 'comment-class id)))
-
-(defmacro comment-select (sql-test &optional sort)
-  `(with-connection (db-params)
-     (select-dao 'comment-class ,sql-test ,sort)))
-
-(defun comment-update (comment)
-  (With-connection (db-params)
-    (update-dao comment)))
-
-(defun comment-delete (comment)
-  (with-connection (db-params)
-    (delete-dao comment)))
 ;(pomo:connect-toplevel "aubreedb" "vtomole" "19962014V" "localhost")
 (defparameter *cover-page* "
 <!DOCTYPE html>
@@ -338,6 +296,57 @@ TODO: cleanup code."
 	 (database (second (cl-ppcre:split "/" (second (cl-ppcre:split "@" url))))))
     (list database user password host))))
 
+
+(defmacro create-table (name)
+  `(with-connection (db-params)
+  (unless (table-exists-p ',name)
+    (execute (dao-table-definition ',name)))))
+
+(create-table comment-class)
+
+(defclass movie ()
+    ((id :col-type serial :reader movie-id)
+     (title :col-type string :initarg :title :accessor movie-title)
+     (rating :col-type string :initarg :rating :accessor movie-rating)
+     (release-date :col-type date :initarg :release-date :accessor movie-release-date))
+    (:metaclass dao-class) 
+    (:keys id))
+
+(defclass comment-class ()
+    ((id :col-type serial :reader thread-id)
+     (author :col-type string :initarg :author :accessor comment-author)
+     (email :col-type string :initarg :email :accessor comment-email)
+     (subject :col-type string :initarg :subject :accessor comment-subject)
+     (body :col-type string :initarg :body :accessor comment-body)
+     (comment-date :col-type date :initarg :comment-date :accessor post-comment-date))
+    (:metaclass dao-class) 
+    (:keys id))
+
+;;CRUD
+(defmacro comment-create (&rest args)
+  `(with-connection (db-params)
+     (make-dao 'comment-class ,@args)))
+
+(defun comment-get-all ()
+  (with-connection (db-params)
+    (select-dao 'comment-class)))
+
+(defun comment-get (id)
+  (with-connection (db-params)
+    (select-dao 'comment-class id)))
+
+(defmacro comment-select (sql-test &optional sort)
+  `(with-connection (db-params)
+     (select-dao 'comment-class ,sql-test ,sort)))
+
+(defun comment-update (comment)
+  (With-connection (db-params)
+    (update-dao comment)))
+
+(defun comment-delete (comment)
+  (with-connection (db-params)
+    (delete-dao comment)))
+
 ;; Handlers
 (defun publish-static-content ()
 
@@ -561,4 +570,4 @@ TODO: cleanup code."
 (forum)
 (thread)
 (publish-static-content)
-;(when (string= (heroku-slug-dir) "/home/vtomole/quicklisp/local-projects/aubree") (start-server 8080))
+(when (string= (heroku-slug-dir) "/home/vtomole/quicklisp/local-projects/aubree") (start-server 8080))
