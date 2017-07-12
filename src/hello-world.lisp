@@ -462,11 +462,11 @@ TODO: cleanup code."
 
 (defparameter test-board (make-instance 'board
 					:name "a"
-					:threads (list test-thread
+					:threads (list test-thread-temp
 						       test-thread2
-						       test-thread
+						       test-thread-temp
 						       test-thread2
-						       test-thread)))
+						       test-thread-temp)))
 
 (defmethod summarize ((thread thread) &optional (preview-comment-count 5))
   (let* ((preview-comments (last (cdr (comments thread)) preview-comment-count))
