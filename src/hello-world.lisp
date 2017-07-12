@@ -1,4 +1,47 @@
 (in-package :example)
+
+(defclass movie ()
+    ((id :col-type serial :reader movie-id)
+     (title :col-type string :initarg :title :accessor movie-title)
+     (rating :col-type string :initarg :rating :accessor movie-rating)
+     (release-date :col-type date :initarg :release-date :accessor movie-release-date))
+    (:metaclass dao-class) 
+    (:keys id))
+
+(defclass comment-class ()
+    ((id :col-type serial :reader thread-id)
+     (author :col-type string :initarg :author :accessor comment-author)
+     (email :col-type string :initarg :email :accessor comment-email)
+     (subject :col-type string :initarg :subject :accessor comment-subject)
+     (body :col-type string :initarg :body :accessor comment-body)
+     (comment-date :col-type date :initarg :comment-date :accessor post-comment-date))
+    (:metaclass dao-class) 
+    (:keys id))
+
+;;CRUD
+(defmacro comment-create (&rest args)
+  `(with-connection (db-params)
+     (make-dao 'comment-class ,@args)))
+
+(defun comment-get-all ()
+  (with-connection (db-params)
+    (select-dao 'comment-class)))
+
+(defun comment-get (id)
+  (with-connection (db-params)
+    (select-dao 'comment-class id)))
+
+(defmacro comment-select (sql-test &optional sort)
+  `(with-connection (db-params)
+     (select-dao 'comment-class ,sql-test ,sort)))
+
+(defun comment-update (comment)
+  (With-connection (db-params)
+    (update-dao comment)))
+
+(defun comment-delete (comment)
+  (with-connection (db-params)
+    (delete-dao comment)))
 ;(pomo:connect-toplevel "aubreedb" "vtomole" "19962014V" "localhost")
 (defparameter *cover-page* "
 <!DOCTYPE html>
@@ -355,12 +398,17 @@ TODO: cleanup code."
 		 :author "vtomole" :email "vtomole@gmail.com" :subject "Hey welcome to this board"
 		 :date-and-time (get-universal-time)))
 
-;(defmethod echo ((comment comment))
-;  (cl-who:with-html-output-to-string (*standard-output* nil :indent t)
-;		      (htm (:div :class "comment"
-;				 (echo-header comment)
-;					(:span :class "body"
-;					       (:p (cl-who:str (body comment))))))))
+(defmethod echo ((a-comment comment-class))
+  (with-html-output-to-string (*standard-output* nil :indent t)
+    (with-slots (author email subject body comment-date) a-comment
+      (htm (:div :class "comment"
+                 (:span :class "header" 
+                        (str author) (str email) 
+                        (str comment-date) (str subject))
+                 (:span :class "body" 
+                        (:p (str body))))))))
+
+
 (defmethod echo ((a-comment comment))
   (with-html-output-to-string (*standard-output* nil :indent t)
     (with-slots (author email subject body date-and-time) a-comment
@@ -388,19 +436,29 @@ TODO: cleanup code."
 		 :body "Scheme is awesome!"
 		 :date-and-time (get-universal-time)))
 
-(defparameter test-thread
+(defparameter test-thread-temp
   (make-instance 'thread
 		 :board "a"
 		 :comments (list test-comment3 test-comment4)))
 
-(setf (comments test-thread) 
-           (append (comments test-thread) 
-                   (list test-comment3 test-comment4)))
+(defparameter test-thread
+  (make-instance 'thread
+		 :board "a"
+		 :comments nil))
+
+;(setf (comments test-thread) 
+;           (append (comments test-thread) 
+;                   (list test-comment3 test-comment4)))
 
 (defparameter test-thread2
   (make-instance 'thread
 		 :board "a"
 		 :comments (list test-comment test-comment2)))
+
+(defparameter test-thread3
+  (make-instance 'thread
+		 :board "a"
+		 :comments (list test-comment3 test-comment4)))
 
 (defparameter test-board (make-instance 'board
 					:name "a"
@@ -410,15 +468,6 @@ TODO: cleanup code."
 						       test-thread2
 						       test-thread)))
 
-;(defmethod echo ((thread thread))
- ; (let ((first-comment (car (comments thread))))
-  ;  (cl-who:with-html-output (*standard-output* nil :indent t)
-;	(htm (:div :class "thread"
-;		   (echo-header comment)
-;		   (:span :class "body"
-;			  (:p (cl-who:str (body first-comment)))
-;		   (dolist (r (cdr (comments thread)))
-					;		     (cl-who:str (echo r)))))))))
 (defmethod summarize ((thread thread) &optional (preview-comment-count 5))
   (let* ((preview-comments (last (cdr (comments thread)) preview-comment-count))
          (omitted-count (- (length (cdr (comments thread))) (length preview-comments)))
@@ -477,7 +526,10 @@ TODO: cleanup code."
 
 (defun thread () (hunchentoot:define-easy-handler (thread :uri "/thread") ()
 		    (page-template (:title (board test-thread))
-					   (show-formlet post-comment-form)
+		      (show-formlet post-comment-form)
+		      (setf (comments test-thread) (list test-comment3))
+		      (dolist (comment (comment-get-all))
+	   (setf (comments test-thread) (append (comments test-thread) (list comment))))
        (echo test-thread))))
 
 (formlets:define-formlet (post-comment-form)
@@ -487,53 +539,11 @@ TODO: cleanup code."
                                     :author author :email email 
                                     :subject subject :body body
                                     :date-and-time (get-universal-time))))
-    (setf (comments test-thread)
-          (append (comments test-thread) (list new-comment)))
+    ;(setf (comments test-thread)
+     ;     (append (comments test-thread) (list new-comment)))
     (comment-create :author (author new-comment) :email (email new-comment) :subject (subject new-comment) :body (body new-comment) :comment-date (encode-date 2017 7 11))
     (redirect "/thread")))
 
-(defclass movie ()
-    ((id :col-type serial :reader movie-id)
-     (title :col-type string :initarg :title :accessor movie-title)
-     (rating :col-type string :initarg :rating :accessor movie-rating)
-     (release-date :col-type date :initarg :release-date :accessor movie-release-date))
-    (:metaclass dao-class) 
-    (:keys id))
-
-(defclass comment-class ()
-    ((id :col-type serial :reader thread-id)
-     (author :col-type string :initarg :author :accessor comment-author)
-     (email :col-type string :initarg :email :accessor comment-email)
-     (subject :col-type string :initarg :subject :accessor comment-subject)
-     (body :col-type string :initarg :body :accessor comment-body)
-     (comment-date :col-type date :initarg :comment-date :accessor post-comment-date))
-    (:metaclass dao-class) 
-    (:keys id))
-
-;;CRUD
-(defmacro comment-create (&rest args)
-  `(with-connection (db-params)
-     (make-dao 'comment-class ,@args)))
-
-(defun comment-get-all ()
-  (with-connection (db-params)
-    (select-dao 'comment-class)))
-
-(defun comment-get (id)
-  (with-connection (db-params)
-    (select-dao 'comment-class id)))
-
-(defmacro comment-select (sql-test &optional sort)
-  `(with-connection (db-params)
-     (select-dao 'comment-class ,sql-test ,sort)))
-
-(defun comment-update (comment)
-  (With-connection (db-params)
-    (update-dao comment)))
-
-(defun comment-delete (comment)
-  (with-connection (db-params)
-    (delete-dao comment)))
 
 ;(defclass comment ()
 ;  ( (id :col-type serial :reader thread-id)

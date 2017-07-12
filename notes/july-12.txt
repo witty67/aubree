@@ -1,0 +1,55 @@
+A Blueprint for Building a Quantum Computer
+The architecture: Physical and logical clock speed, topology of interconnects, number of logical quantum bits available in the system, and details of the algorithm implementation.
+
+
+The QUDOS way is not practical because reasons, so you need to figure out why it is not practical.
+
+Error correction: Surface code
+
+
+Things to be considered:
+CLock speed The conversion factor from physical gate cycle to logical gate cycle
+
+Computer engineers responsibility: Large and fast enoguh to be useful, Small and cheap enough to be built.
+
+6 billion qubits for the main quantum state. To address some of the limitations, the QUDOs architecture was developed.
+
+Demonstration of a small programmable quantum computer with atomic qubits
+
+Software -> Hardware
+
+Hadamard(H), CNOT  and Controlled phase gate and pi/8 -----> two-qubit-Ising gates (XX) and and Single-qubit rotation (R) gates -------->
+Laser pulses that are pre-calculated to effect the desired operation through the Coulomb-coupled motion while disentangling the motion at the end of the gates.
+
+
+Single qubit and multiqubits------> H CNOT pi/8 ----> microwave based quantum gates that use microwave radiation with static magnetic field gradient.
+
+Computation: First initialize all qubits to state |0> using optical pumping
+
+In the original proposals, Logical qubits were encoded in a number of physical qubits using special code word states that allsw identification and fixing of errors (occuring on single physical qubits)
+
+
+The surface code requires physical qubits to be placed in a regular lattice, which can decompose into one sublattice holding data qubits and another sublattice holding measure-X(pauli x)  and measure-Z( pauli z)  qubits
+
+The measure-z qubits perform four successive CNOT gates wih the data qubits and the the state of measure-z is detected.
+
+cnot z data
+cnot z data
+cnot z data
+cnot z data
+measure z
+The measure x qubits do the same thing exept a hadamard was perfomed before and after
+h x
+cnot x data
+cnot x data
+cnot x data
+cnot x data
+h x
+measure x
+
+The correction can be performed in software by translating the measurement results at the end of the execution into appropriately modified values.
+
+pi/8 are hard to implement with surface code
+
+cnot ancilla
+ One great distributed simulator that you can build more abstract programming tools on
