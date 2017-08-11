@@ -1,4 +1,8 @@
 (ql:quickload 'l-math)
+
+;Temporary
+(defun square (x)
+  (* x x))
 (defclass Program ()
 	    (program
 	     result_probability
@@ -49,56 +53,70 @@
 			h q[1];
 			bloch q[1];")
 
-(print (slot-value program_blue_state 'program))
+;(print (slot-value program_blue_state 'program))
 
 
-(defparameter ket-zero
+(defparameter state-vector
 	     (make-array '(2 1)  :initial-contents '( (1) (0))))
 
-(defvar ket-one
-	     (lm:make-matrix 2 1 :initial-elements '(0 
-						     1)))
+(defparameter ket-one
+	     (make-array '(2 1)  :initial-contents '( (0) (1))))
 
 (defvar hadamard
 	     (lm:make-matrix 2 2 :initial-elements `(,(/ 1 (sqrt 2))  ,(/ 1 (sqrt 2))
 						     ,(/ 1 (sqrt 2))   ,(/ 1 (sqrt 2)))))
 
-(defvar cnot
-	     (lm:make-matrix 4 4 :initial-elements `(1 0 0 0
-						     0 1 0 0
-						     0 0 0 1
-						     0 0 1 0)))
-(defvar pauli-x
+
+(defparameter pauli-x
   (make-array '(2 2)  :initial-contents `( (0 1)
 					   (1 0))))
-(defvar pauli-y
+(defparameter pauli-y
 	     (make-array '(2 2)  :initial-contents `((0 ,(complex 0 -1))
 						    (,(complex 0 1) 0))))
 
-(defvar pauli-z
-	     (lm:make-matrix 2 2 :initial-elements `(1 0
-						     0 -1)))
+(defparameter pauli-z
+	     (make-array '(2 2)  :initial-contents `( (1 0)
+						      (0 -1))))
 
-(defstruct state-vector
-	   c1
-	   c2)
+(defparameter cnot
+	     (make-array '(4 4) :initial-contents `((1 0 0 0)
+						     (0 1 0 0)
+						     (0 0 0 1)
+						     (0 0 1 0))))
 
-(defparameter state (make-state-vector :c1 (complex (/ 1 (sqrt 2)) 0) :c2 (complex (/ 1 (sqrt 2)) 0)))
-(state-vector-c1 state)
-(state-vector-c2 state)
+;(defstruct state-vector  c1	   c2  ket-zero	   ket-one)
 
-(defun total-probability  (state)
-	     (+ (square (abs (state-vector-c1 state))) (square (abs (state-vector-c2 state)))))
+;(defparameter state (make-state-vector :c1 (complex (/ 1 (sqrt 2)) 0) :c2 (complex (/ 1 (sqrt 2)) 0)))
+;(state-vector-c1 state)
+;(state-vector-c2 state)
+
+(defun total-probability  (qubit)
+	     (+ (square (abs (aref qubit 0 0))) (square (abs (aref qubit 1 0) ))))
 
 
-(print (total-probability state))
+;(print (total-probability state))
 
 
-(defun matrix-multiply (a b)
-	 ( make-array '(2 1) :initial-contents `(,(cons (+ (* (aref a 0 0) (aref b 0 0 ))  (* (aref a 0 1) (aref b 1 0 )) ) '())
-						  ,(cons (+ (* (aref a 1 0) (aref b 0 0 ))  (* (aref a 1 1) (aref b 1 0 )) ) '()))))
+(defun apply-gate (qubit gate)
+  ( make-array '(2 1) :initial-contents
+	       `(,(cons (+ (* (aref gate 0 0) (aref qubit 0 0 ))  (* (aref gate 0 1) (aref qubit 1 0 )) ) '())
+		  ,(cons (+ (* (aref gate 1 0) (aref qubit 0 0 ))  (* (aref gate 1 1) (aref qubit 1 0 )) ) '()))))
 
-(print (matrix-multiply pauli-x ket-zero))
-;Temporary
-(defun square (x)
-  (* x x))
+(defun measure (qubit)
+	   (cond ((equalp qubit  #2A((1) (0))) 0)
+		 ((equalp qubit  #2A((0) (1))) 1)
+		 (t (if (<= (random 2) (square (abs (aref qubit 0 0)))) 1 0))))
+
+;(print (matrix-multiply pauli-x ket-zero))
+;(matrix-multiply pauli-y ket-zero)
+
+(defstruct quantum-register
+	   (q0 state-vector :type array)
+	   (q1 state-vector :type array)
+	   (q2 state-vector :type array)
+	   (q3 state-vector :type array)
+	   (q4 state-vector :type array))
+
+(Defparameter register (make-quantum-register))
+
+(quantum-register-q0 register)
