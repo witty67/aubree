@@ -24,6 +24,8 @@ Laser pulses that are pre-calculated to effect the desired operation through the
 
 Single qubit and multiqubits------> H CNOT pi/8 ----> microwave based quantum gates that use microwave radiation with static magnetic field gradient.
 
+
+
 Computation: First initialize all qubits to state |0> using optical pumping
 
 In the original proposals, Logical qubits were encoded in a number of physical qubits using special code word states that allsw identification and fixing of errors (occuring on single physical qubits)
@@ -49,7 +51,11 @@ measure x
 
 The correction can be performed in software by translating the measurement results at the end of the execution into appropriately modified values.
 
+
 pi/8 are hard to implement with surface code
 
 cnot ancilla
  One great distributed simulator that you can build more abstract programming tools on
+
+
+Application -> Compiler -> Quantum COntrol -> Hardware
