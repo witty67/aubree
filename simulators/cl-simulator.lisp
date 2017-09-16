@@ -57,7 +57,14 @@
 			bloch q[1];")
 
 ;(print (slot-value program_blue_state 'program))
+(defstruct quantum-register
+	   (q0 state-vector :type array)
+	   (q1 state-vector :type array)
+	   (q2 state-vector :type array)
+	   (q3 state-vector :type array)
+	   (q4 state-vector :type array))
 
+(defparameter register (make-quantum-register))
 
 (defparameter state-vector
 	     (make-array '(2 1)  :initial-contents '( (1) (0))))
@@ -101,11 +108,16 @@
 	     (make-array '(2 2)  :initial-contents `( (1 0)
 						      (0 -1))))
 
+(defparameter pi/8
+	     (make-array '(2 2)  :initial-contents `( (1 0)
+						      (0 ,(exp (* (complex 0 1) (complex (/ pi 4))))))))
+
 (defparameter cnot
 	     (make-array '(4 4) :initial-contents `((1 0 0 0)
 						     (0 1 0 0)
 						     (0 0 0 1)
-						     (0 0 1 0))))
+						    (0 0 1 0))))
+
 
 ;(defstruct state-vector  c1	   c2  ket-zero	   ket-one)
 
@@ -155,11 +167,11 @@
                                        (aref B j k))))))
     C))
 
-(defun n-wire-gate (gate qubits) 
+(defun n-wire-gate (gate qubits register) 
 	   (cond ((null qubits) 'done)
 		 (t  (progn
-		       (setf (slot-value register (first qubits)) (apply-gate ket-one gate))
-		       (two-wire-gate gate (rest qubits))))))
+		       (setf (slot-value register (first qubits)) (apply-gate (slot-value register (first qubits)) gate))
+		       (n-wire-gate gate (rest qubits) register)))))
 		  
 
 (defun measure (qubit)
@@ -171,14 +183,7 @@
 ;(print (matrix-multiply pauli-x ket-zero))
 ;(matrix-multiply pauli-y ket-zero)
 
-(defstruct quantum-register
-	   (q0 state-vector :type array)
-	   (q1 state-vector :type array)
-	   (q2 state-vector :type array)
-	   (q3 state-vector :type array)
-	   (q4 state-vector :type array))
 
-(defparameter register (make-quantum-register))
 
 (quantum-register-q0 register)
 
@@ -186,6 +191,9 @@
 	      (case (second qubit)
 		(0 '(/ (+ (ket 0) (ket 1)) (sqrt 2)))
 		(1 '(/ (- (ket 0) (ket 1)) (sqrt 2)))))
+
+;;Derived gates
+(defparameter not-y-positive (apply-gate-cnot pauli-z (apply-gate-cnot pauli-x pauli-y)))
 
 (defun qeval (1st)
 	      (case (car 1st)
@@ -197,6 +205,7 @@
 (apply-gate (apply-gate ket-one hadamard) hadamard); => 0|0> - 1|1>
 (setf (slot-value register 'q0) (apply-gate ket-one hadamard))
 (setf (slot-value register 'q1) (apply-gate ket-one hadamard))
+(measure (apply-gate ket-zero hadamard)); 50/50
 
 #|(cl-forest:run (quil "H 0"
                       "CNOT 0 1"
