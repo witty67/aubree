@@ -1,0 +1,10 @@
+http://twistedoakstudios.com/blog/Post2644_grovers-quantum-search-algorithm
+Grover's algorithm: Searches through function inputs.
+
+(Grover #'function)
+
+(defun grover (function)
+  (search implicit-list-of-possible-inputs-to-function))
+
+(defun search (list-possible-input-to-function)
+  input-that-that-makes-function-true)
