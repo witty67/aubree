@@ -1,14 +1,13 @@
 
 (defparameter *s* (open "epr.lqasm"))
 (defparameter program (read *s*))
-					
+
 (defun square (x)
   (* x x))
 (defclass Program ()
   (program
    result_probability
    bloch_vals))
-
 
 (defvar 1/sqrt2 (/ 1 (sqrt 2)))
 (defvar -1/sqrt2 (- 1/sqrt2))
@@ -25,10 +24,6 @@
   DISPROG ;Whether to print instructions
   SUPPRESSM ;Display actual determinate results
   )
-
-					;(qprog-n program)
-
-
 (defstruct Qstate
   n
   x
@@ -36,9 +31,6 @@
   r
   pw
   over32)
-
-
-
 
 (defparameter program_blue_state (make-instance 'Program))
 
@@ -152,8 +144,6 @@
 	(setf D (make-array '(4 1)  :initial-contents `( (,(aref C 0 0)) (,(aref C 1 0)) (,(aref C 2 0)) (,(aref C 3 0))))) 
 	D)))
 
-
-
 (defun apply-gate-cnot (A B)
   (let* ((m (car (array-dimensions A)))
          (n (cadr (array-dimensions A)))
@@ -173,6 +163,12 @@
 	      (setf (slot-value register (first qubits)) (apply-gate (slot-value register (first qubits)) gate))
 	      (n-wire-gate gate (rest qubits) register)))))
 
+(defun measure (qubit)
+  (cond ((equalp qubit  #2A((1) (0))) 0)
+	((equalp qubit  #2A((0) (1))) 1)
+	((equalp (array-dimensions qubit) '(4 1)) (measure-two-qubit qubit)) 
+	(t (if (<= (random 2) (square (abs (aref qubit 0 0)))) 1 ))))
+
 (defun measure-two-qubit (qubit)
 	   (case (measure (make-array '(2 1)  :initial-contents `( (,(aref qubit 0 0)) (,(aref qubit 1 0)))))
 	     (1 (make-array '(4 1)  :initial-contents `( (0) (1) (,(aref qubit 1 0)) (,(aref qubit 0 0)))))
@@ -189,11 +185,6 @@
 (defparameter superposition '(+ (* amplitude (ket 0)) (* amplitude (ket 1))))
 					;(print (matrix-multiply pauli-x ket-zero))
 					;(matrix-multiply pauli-y ket-zero)
-
-
-
-;(quantum-register-q0 register)
-
 (defun hadamard (qubit)
   (case (second qubit)
     (0 '(/ (+ (ket 0) (ket 1)) (sqrt 2)))
@@ -233,7 +224,6 @@
 	  ((equalp literal-qubit #2A((0) (1))) 1)
 	  (t 'nothing))))
 
-
 (defun match-cnot (qubit)
   (cond ((equal qubit '(0 0)) ket-zero-zero)
 	((equal qubit '(0 1)) ket-zero-one)
@@ -260,29 +250,32 @@
 (defun qeval (program-list register) 
   ;(print program-list)
   ;(print (cadar program-list))
-  (let ((local-register register))
-    (labels ((inner-qeval (program-list)
-	       (cond ((null program-list) 'done)
+  (let ((local-register register)(measurement-value 0))
+    (labels ((inner-qeval (program-list measurement-value)
+	       (cond ((null program-list) measurement-value)
 		     ((eq (caar program-list) 'h) (progn						    
 						    (handle-h program-list local-register)						    
-						    (inner-qeval (cdr program-list))))
+						    (inner-qeval (cdr program-list)measurement-value)))
 		     
 		     ((eq (caar program-list) 'cnot) (progn
 						       
 						       ;;(handle-cnot-kets (match-cnot (cdar program-list)) local-register (caddar '((cnot 0 1))))
 						       
 						       (epr (scan-qubit (cadar program-list) local-register) (scan-qubit (caddar program-list) local-register) local-register (match (cadar program-list)) (match (caddar program-list)))
-						       (inner-qeval (cdr program-list))))
+						       (inner-qeval (cdr program-list)measurement-value)))
 
 		     ((eq (caar program-list) 'measure) (progn					 
 							 
-						      (print (measure (slot-value local-register (match (cadar program-list))))) 
-							  
+						      (setf measurement-value (measure (slot-value local-register (match (cadar program-list)))))					  
 						       
-						       (inner-qeval (cdr program-list))))
+						       (inner-qeval (cdr program-list)measurement-value)))
 		     
-		     (t   (inner-qeval (cdr program-list))))))(inner-qeval program-list))))
+		     (t   (inner-qeval (cdr program-list)  measurement-value)))))(inner-qeval program-list measurement-value))))
 
+
+(defun sanity-check (times)
+	   (let ((counter 0))
+		 (dotimes (i times) (if (equal (qeval program register) 1) (incf counter) nil))counter))
 ;;Tests
 #|(measure (apply-gate ket-one pauli-x)) ;=> |0>
 (measure (apply-gate ket-zero pauli-x)); => |1>
