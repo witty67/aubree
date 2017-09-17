@@ -1,6 +1,6 @@
 (in-package :cl-simulator)
 (defparameter *s* (open "epr.lqasm"))
-(defparameter program (read *s*))
+(defparameter *program* (read *s*))
 
 (defun square (x)
   (* x x))
@@ -267,7 +267,11 @@
 
 (defun sanity-check (times)
 	   (let ((counter 0))
-		 (dotimes (i times) (if (equal (qeval program register) 1) (incf counter) nil))counter))
+	     (dotimes (i times) (if (equal (qeval *program* register) 1) (incf counter) nil))counter))
+
+(defun process (data)
+  (let* ((path (concatenate 'string "/tmp/" (coerce data 'string)))  (s (open path))  (program (read s)))
+  (format nil "Result~@[ ~A~]!"(sanity-check 1))))
 ;;Tests
 #|(measure (apply-gate ket-one pauli-x)) ;=> |0>
 (measure (apply-gate ket-zero pauli-x)); => |1>

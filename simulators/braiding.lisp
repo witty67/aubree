@@ -5,10 +5,6 @@
 
 
 ;;auxillary functions
-
-(defun process (data)
-  (print data))
-
 (defun square (n)
   (* n n))
 

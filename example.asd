@@ -20,6 +20,7 @@
 			:components (
 				     
 				     (:file "qgame")
+				     (:file "cl-simulator")
 				     (:file "braiding")
 				     (:file "em")))
 
@@ -28,6 +29,11 @@
 			:components (
 				     (:file "topological-intro")
 				     (:file "index")))
+	       (:module :cl-simulator
+			:serial t      
+			:components (
+				     (:file "cl-simulator")
+				     ))
 	       
 	       (:module :src
 			:serial t      

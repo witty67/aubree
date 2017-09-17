@@ -222,7 +222,7 @@
         (concatenate 'string "/tmp/"
 		     (setf *data* (cl-base64:string-to-base64-string (cadr uploaded)))))
     
-    (simulators:process *data*))
+    (cl-simulator:process *data*))
     
 
 

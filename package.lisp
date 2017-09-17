@@ -11,6 +11,10 @@
   (:use #:cl #:zpng)
   (:export :process :execute-quantum-program :amplitudes :fact :square :run-python :cl-forest :epr))
 
+(defpackage #:cl-simulator
+  (:use #:cl #:zpng)
+  (:export :process))
+
 (defpackage #:example
   (:use :cl :cl-who :hunchentoot :parenscript :formlets :postmodern :simple-date)
   (:export :*google-analytics*)
