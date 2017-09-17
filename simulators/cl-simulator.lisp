@@ -1,5 +1,7 @@
 
-					;Temporary
+(defparameter *s* (open "epr.lqasm"))
+(defparameter program (read *s*))
+					
 (defun square (x)
   (* x x))
 (defclass Program ()
@@ -56,6 +58,8 @@
 			h q[1];
 			bloch q[1];")
 
+(defparameter state-vector
+  (make-array '(2 1)  :initial-contents '( (1) (0))))
 					;(print (slot-value program_blue_state 'program))
 (defstruct quantum-register
   (q0 state-vector :type array)
@@ -65,10 +69,6 @@
   (q4 state-vector :type array))
 
 (defparameter register (make-quantum-register))
-
-(defparameter state-vector
-  (make-array '(2 1)  :initial-contents '( (1) (0))))
-
 ;;Write a macro for these
 
 ;;one-qubit gates
@@ -173,6 +173,12 @@
 	      (setf (slot-value register (first qubits)) (apply-gate (slot-value register (first qubits)) gate))
 	      (n-wire-gate gate (rest qubits) register)))))
 
+(defun measure (qubit)
+  (cond ((equalp qubit  #2A((1) (0))) 0)
+	((equalp qubit  #2A((0) (1))) 1)
+	((equalp (array-dimensions qubit) '(4 1)) (measure-two-qubit qubit)) 
+	(t (if (<= (random 2) (square (abs (aref qubit 0 0)))) 1 ))))
+
 (defun measure-two-qubit (qubit)
 	   (case (measure (make-array '(2 1)  :initial-contents `( (,(aref qubit 0 0)) (,(aref qubit 1 0)))))
 	     (1 (make-array '(4 1)  :initial-contents `( (0) (1) (,(aref qubit 1 0)) (,(aref qubit 0 0)))))
@@ -183,6 +189,8 @@
 	((equalp qubit  #2A((0) (1))) 1)
 	((equalp (array-dimensions qubit) '(4 1)) (measure-two-qubit qubit)) 
 	(t (if (<= (random 2) (square (abs (aref qubit 0 0)))) 1 ))))
+
+
 
 (defparameter superposition '(+ (* amplitude (ket 0)) (* amplitude (ket 1))))
 					;(print (matrix-multiply pauli-x ket-zero))
@@ -196,6 +204,14 @@
   (case (second qubit)
     (0 '(/ (+ (ket 0) (ket 1)) (sqrt 2)))
     (1 '(/ (- (ket 0) (ket 1)) (sqrt 2)))))
+
+
+(defun epr (x y)
+	   (cond ((and (equal x 0) (equal y 0)) (make-array '(4 1)  :initial-contents `((,1/sqrt2) (0) (0) (,1/sqrt2))))
+		 ((and (equal x 0) (equal y 1)) (make-array '(4 1)  :initial-contents `((0) (,1/sqrt2) (,1/sqrt2) (0))))
+		 ((and (equal x 1) (equal y 0)) (make-array '(4 1)  :initial-contents `((,1/sqrt2) (0) (0) (,-1/sqrt2))))
+		 ((and (equal x 1) (equal y 1)) (make-array '(4 1)  :initial-contents `((0) (,1/sqrt2) (,-1/sqrt2) (0))))		
+		 (t 'nothing)))
 
 ;;Derived gates
 (defparameter not-y-positive (apply-gate-cnot pauli-z (apply-gate-cnot pauli-x pauli-y)))
@@ -225,7 +241,12 @@
   (progn
     (print "it's here")
     (setf (slot-value local-register (match-cnot (cdar program-list))) (apply-gate-cnot (slot-value local-register (match-cnot (cdar program-list))) (slot-value local-register (match-cnot (cdar program-list)))))))
-
+(defun handle-cnot-kets (ket local-register second-qubit)
+	   (cond ((eq (aref (apply-gate-cnot ket cnot) 0 0) 1) 'ket-zero-zero)
+		 ((eq (aref (apply-gate-cnot ket cnot) 1 0) 1) 'ket-zero-one)
+		 ((eq (aref (apply-gate-cnot ket cnot) 2 0) 1) (print (slot-value local-register (match second-qubit))))
+		 ((eq (aref (apply-gate-cnot ket cnot) 3 0) 1) 'ket-one-one)
+		 (t 'nothing)))
 (defun qeval (program-list register) 
   (print program-list)
   (print (cadar program-list))
@@ -239,6 +260,12 @@
 		     ((eq (caar program-list) 'cnot) (progn
 						       (print "There is a CNOT here folks")
 						       (handle-cnot-kets (match-cnot (cdar program-list)) local-register (caddar '((cnot 0 1))))
+						       (inner-qeval (cdr program-list))))
+
+		     ((eq (caar program-list) 'measure) (progn
+						       (print "There is a MEASURE here folks")
+						       ;;(measure-qubit (cadar '((measure 1))) local-register)
+						       
 						       (inner-qeval (cdr program-list))))
 		     
 		     (t   (inner-qeval (cdr program-list))))))(inner-qeval program-list))local-register))
