@@ -173,12 +173,6 @@
 	      (setf (slot-value register (first qubits)) (apply-gate (slot-value register (first qubits)) gate))
 	      (n-wire-gate gate (rest qubits) register)))))
 
-(defun measure (qubit)
-  (cond ((equalp qubit  #2A((1) (0))) 0)
-	((equalp qubit  #2A((0) (1))) 1)
-	((equalp (array-dimensions qubit) '(4 1)) (measure-two-qubit qubit)) 
-	(t (if (<= (random 2) (square (abs (aref qubit 0 0)))) 1 ))))
-
 (defun measure-two-qubit (qubit)
 	   (case (measure (make-array '(2 1)  :initial-contents `( (,(aref qubit 0 0)) (,(aref qubit 1 0)))))
 	     (1 (make-array '(4 1)  :initial-contents `( (0) (1) (,(aref qubit 1 0)) (,(aref qubit 0 0)))))
@@ -198,7 +192,7 @@
 
 
 
-(quantum-register-q0 register)
+;(quantum-register-q0 register)
 
 (defun hadamard (qubit)
   (case (second qubit)
@@ -206,12 +200,18 @@
     (1 '(/ (- (ket 0) (ket 1)) (sqrt 2)))))
 
 
-(defun epr (x y)
-	   (cond ((and (equal x 0) (equal y 0)) (make-array '(4 1)  :initial-contents `((,1/sqrt2) (0) (0) (,1/sqrt2))))
+(defun epr (x y local-register qubit1 qubit2)
+  ;;(print qubit1)
+  ;;(print qubit2)
+  (cond ((and (equal x 0) (equal y 0)) (progn (setf (slot-value local-register qubit1) (make-array '(2 1)  :initial-contents `((,1/sqrt2) (0))))
+					      (setf (slot-value local-register qubit2) (make-array '(2 1)  :initial-contents `((0) (,1/sqrt2))))
+					     ))
+					      
 		 ((and (equal x 0) (equal y 1)) (make-array '(4 1)  :initial-contents `((0) (,1/sqrt2) (,1/sqrt2) (0))))
 		 ((and (equal x 1) (equal y 0)) (make-array '(4 1)  :initial-contents `((,1/sqrt2) (0) (0) (,-1/sqrt2))))
 		 ((and (equal x 1) (equal y 1)) (make-array '(4 1)  :initial-contents `((0) (,1/sqrt2) (,-1/sqrt2) (0))))		
 		 (t 'nothing)))
+  
 
 ;;Derived gates
 (defparameter not-y-positive (apply-gate-cnot pauli-z (apply-gate-cnot pauli-x pauli-y)))
@@ -225,31 +225,41 @@
     (3 'q3)
     (4 'q4)))
 
+(defun scan-qubit (qubit register)
+  (let ((literal-qubit (slot-value register (match qubit))))
+    (cond ((equalp literal-qubit #2A((0.70710677) (0.70710677))) 0)
+	  ((equalp literal-qubit #2A((0.70710677) (-0.70710677))) 1)
+	  ((equalp literal-qubit #2A((1) (0))) 0)
+	  ((equalp literal-qubit #2A((0) (1))) 1)
+	  (t 'nothing))))
+
+
 (defun match-cnot (qubit)
   (cond ((equal qubit '(0 0)) ket-zero-zero)
 	((equal qubit '(0 1)) ket-zero-one)
 	((equal qubit '(1 0)) ket-one-zero)
 	((equal qubit '(1 1)) ket-one-one)
-    (t 'nothing)))
+	(t 'nothing)))
+
 (defun handle-h (program-list local-register)
   (progn
-    (print "it's here")
     (setf (slot-value local-register (match (cadar program-list))) (apply-gate (slot-value local-register (match (cadar program-list))) hadamard))))
 
 (defun handle-cnot (program-list local-register)
-  (print (match-cnot (cdar program-list)))
+  (match-cnot (cdar program-list))
   (progn
-    (print "it's here")
     (setf (slot-value local-register (match-cnot (cdar program-list))) (apply-gate-cnot (slot-value local-register (match-cnot (cdar program-list))) (slot-value local-register (match-cnot (cdar program-list)))))))
+
 (defun handle-cnot-kets (ket local-register second-qubit)
 	   (cond ((eq (aref (apply-gate-cnot ket cnot) 0 0) 1) 'ket-zero-zero)
 		 ((eq (aref (apply-gate-cnot ket cnot) 1 0) 1) 'ket-zero-one)
-		 ((eq (aref (apply-gate-cnot ket cnot) 2 0) 1) (print (slot-value local-register (match second-qubit))))
+		 ((eq (aref (apply-gate-cnot ket cnot) 2 0) 1) (slot-value local-register (match second-qubit)))
 		 ((eq (aref (apply-gate-cnot ket cnot) 3 0) 1) 'ket-one-one)
 		 (t 'nothing)))
+
 (defun qeval (program-list register) 
-  (print program-list)
-  (print (cadar program-list))
+  ;(print program-list)
+  ;(print (cadar program-list))
   (let ((local-register register))
     (labels ((inner-qeval (program-list)
 	       (cond ((null program-list) 'done)
@@ -258,20 +268,23 @@
 						    (inner-qeval (cdr program-list))))
 		     
 		     ((eq (caar program-list) 'cnot) (progn
-						       (print "There is a CNOT here folks")
-						       (handle-cnot-kets (match-cnot (cdar program-list)) local-register (caddar '((cnot 0 1))))
+						       
+						       ;;(handle-cnot-kets (match-cnot (cdar program-list)) local-register (caddar '((cnot 0 1))))
+						       
+						       (epr (scan-qubit (cadar program-list) local-register) (scan-qubit (caddar program-list) local-register) local-register (match (cadar program-list)) (match (caddar program-list)))
 						       (inner-qeval (cdr program-list))))
 
-		     ((eq (caar program-list) 'measure) (progn
-						       (print "There is a MEASURE here folks")
-						       ;;(measure-qubit (cadar '((measure 1))) local-register)
+		     ((eq (caar program-list) 'measure) (progn					 
+							 
+						      (print (measure (slot-value local-register (match (cadar program-list))))) 
+							  
 						       
 						       (inner-qeval (cdr program-list))))
 		     
-		     (t   (inner-qeval (cdr program-list))))))(inner-qeval program-list))local-register))
+		     (t   (inner-qeval (cdr program-list))))))(inner-qeval program-list))))
 
 ;;Tests
-(measure (apply-gate ket-one pauli-x)) ;=> |0>
+#|(measure (apply-gate ket-one pauli-x)) ;=> |0>
 (measure (apply-gate ket-zero pauli-x)); => |1>
 (apply-gate ket-one hadamard);=> 0.7|0> - 0.7|1>
 (apply-gate (apply-gate ket-one hadamard) hadamard); => 0|0> - 1|1>
@@ -279,7 +292,7 @@
 (setf (slot-value register 'q1) (apply-gate ket-one hadamard))
 (measure (apply-gate ket-zero hadamard)); 50/50
 
-#|(cl-forest:run (quil "H 0"
+(cl-forest:run (quil "H 0"
 "CNOT 0 1"
 "MEASURE 0 [0]"
 "MEASURE 1 [1]")
