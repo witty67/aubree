@@ -8,3 +8,12 @@ Grover's algorithm: Searches through function inputs.
 
 (defun search (list-possible-input-to-function)
   input-that-that-makes-function-true)
+
+
+Quantum algorithm: A bunch of carefully chosen matrix multiplications to make solution states have large amplitudes.
+
+Mach-Zehnder interferometer:
+
+Mirror- Rotates a photon's phase by 90 degrees
+Beamsplitter: Reflects photon onto the opposite path
+Mirror: ((i 0) (0 i))
