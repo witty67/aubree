@@ -42,7 +42,7 @@
             <div class='inner'>        
               <nav class='nav nav-masthead'>
                 <a class='nav-link' href='#'>Blog</a>
-                <a class='nav-link' href='#'>Resources</a>
+                <a class='nav-link' href='/qcvm'>Quantum Virtual Machine</a>
                 <a class='nav-link' href='#'>Sign In</a>
                 <a class='nav-link' href='/forum'>Forum</a>
               </nav>

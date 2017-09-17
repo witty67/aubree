@@ -154,7 +154,65 @@
  </form>"
 		(:p "Or, you could use the <a href=/editor\>\Online Text Editor</a>")
 		
-))))  
+		))))
+
+
+(hunchentoot:define-easy-handler (say-yo2 :uri "/qcvm") ()
+  (cl-who:with-html-output-to-string (s)
+    (:html
+     (cl-who:str example:*google-analytics*)
+              (:head
+	       (:title "QCVM")
+	      (str (generate-prologue *ajax-processor*))
+	      (:script :type "text/javascript"
+          (str
+            (ps
+              (defun callback (response)
+                (alert response))
+		
+              (defun on-click ()
+                (chain smackjack (echo (chain document
+                                              (get-element-by-id "data")
+                                              value)
+                                       callback)))
+
+	      (defun on-click-fact ()
+                (chain smackjack (echo-fact (chain document
+                                              (get-element-by-id "data-fact")
+                                              value)
+					    callback)))
+
+	      (defun on-click-numpy ()
+                (chain smackjack (echo-numpy (chain document
+                                              (get-element-by-id "data-fact")
+                                              value)
+					     callback)))
+
+	      (defun on-click-check-file ()
+                (chain smackjack (echo-check-file (chain document
+                                              (get-element-by-id "check-file")
+                                              value)
+                                       callback)))
+
+
+	      ;(defun run-grover ()
+                ;(chain smackjack (echo-grover)))
+
+	      
+
+	      ))))
+			
+              (:body
+	       (:h1 "QCVM: A Quantum Computer Virtual Machine on the Cloud")
+	       
+
+		"<form enctype=\"multipart/form-data\" action=\"upload\" method=\"POST\">
+ Upload your quantum program as a file to run it: <input name=\"uploaded\" type=\"file\" /><br />
+ <input type=\"submit\" value=\"Upload\" />
+ </form>"
+	 
+		
+))))
       
 (setq *dispatch-table* (list 'dispatch-easy-handlers
                              (create-ajax-dispatcher *ajax-processor*)))

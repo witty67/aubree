@@ -166,21 +166,13 @@
 (defun measure (qubit)
   (cond ((equalp qubit  #2A((1) (0))) 0)
 	((equalp qubit  #2A((0) (1))) 1)
-	((equalp (array-dimensions qubit) '(4 1)) (measure-two-qubit qubit)) 
+	;((equalp (array-dimensions qubit) '(4 1)) (measure-two-qubit qubit)) 
 	(t (if (<= (random 2) (square (abs (aref qubit 0 0)))) 1 ))))
 
 (defun measure-two-qubit (qubit)
 	   (case (measure (make-array '(2 1)  :initial-contents `( (,(aref qubit 0 0)) (,(aref qubit 1 0)))))
 	     (1 (make-array '(4 1)  :initial-contents `( (0) (1) (,(aref qubit 1 0)) (,(aref qubit 0 0)))))
 	     (t qubit)))
-
-(defun measure (qubit)
-  (cond ((equalp qubit  #2A((1) (0))) 0)
-	((equalp qubit  #2A((0) (1))) 1)
-	((equalp (array-dimensions qubit) '(4 1)) (measure-two-qubit qubit)) 
-	(t (if (<= (random 2) (square (abs (aref qubit 0 0)))) 1 ))))
-
-
 
 (defparameter superposition '(+ (* amplitude (ket 0)) (* amplitude (ket 1))))
 					;(print (matrix-multiply pauli-x ket-zero))
