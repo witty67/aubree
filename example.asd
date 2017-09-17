@@ -20,7 +20,6 @@
 			:components (
 				     
 				     (:file "qgame")
-				     (:file "cl-simulator")
 				     (:file "braiding")
 				     (:file "em")))
 
