@@ -1,6 +1,9 @@
 (in-package :cl-simulator)
-(defparameter *s* (open "epr.lqasm"))
-(defparameter *program* (read *s*))
+;(defparameter *s* (open "epr.lqasm"))
+;(defparameter *program* (read *s*))
+(defparameter *program* '((H 0)
+     (CNOT 0 1)
+			  (MEASURE 1)))
 
 (defun square (x)
   (* x x))
