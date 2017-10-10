@@ -80,6 +80,12 @@
   (q4 state-vector :type array))
 
 (defparameter register (make-quantum-register))
+
+(defparameter register1 (make-quantum-register))
+
+
+(defun print-register (register)
+  (print register))
 ;;Write a macro for these
 
 ;;one-qubit gates
@@ -275,7 +281,7 @@
 						       (epr (scan-qubit (cadar program-list) local-register) (scan-qubit (caddar program-list) local-register) local-register (match (cadar program-list)) (match (caddar program-list)))
 						       (inner-qeval (cdr program-list)measurement-value)))
 
-		     ((eq (caar program-list) 'measure) (progn					 
+		     ((eq (caar program-list) 'measure) (progn						  
 							 
 						      (setf measurement-value (measure (slot-value local-register (match (cadar program-list)))))					  
 						       
@@ -293,7 +299,9 @@
 	     (dotimes (i times) (if (equal (qeval program register) 1) (incf counter) nil))counter))
 
 (defun process (data)
-  (format nil "Result~@[ ~A~]!"(sanity-check 1)))
+  
+  (format nil "Result~@[ ~A~]!" (eval-file data)))
+  ;;(format nil "Result-1~@[ ~A~]!"(sanity-check 1)))
 ;;Tests
 #|(measure (apply-gate ket-one pauli-x)) ;=> |0>
 (measure (apply-gate ket-zero pauli-x)); => |1>
