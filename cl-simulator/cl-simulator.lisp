@@ -1,6 +1,22 @@
 (in-package :cl-simulator)
 ;(defparameter *s* (open "epr.lqasm"))
-;(defparameter *program* (read *s*))
+					;(defparameter *program* (read *s*))
+
+(defparameter *program1* (read-from-string "((X 0)
+(H 0)
+(H 1)
+     (CNOT 0 1)
+     (H 0)
+     (H 1)
+     (MEASURE 0)
+(MEASURE 1))"))
+
+;;(defparameter *program2* (read *s*))
+
+(defun eval-file (filename)
+  (let* (( s (open filename)) (program (read s)))
+    (sanity-check-tmp program 1)))
+
 (defparameter *program* (read-from-string "((H 0)
      (CNOT 0 1)
 			  (MEASURE 1))"))
@@ -271,6 +287,10 @@
 (defun sanity-check (times)
 	   (let ((counter 0))
 	     (dotimes (i times) (if (equal (qeval *program* register) 1) (incf counter) nil))counter))
+
+(defun sanity-check-tmp (program times)
+	   (let ((counter 0))
+	     (dotimes (i times) (if (equal (qeval program register) 1) (incf counter) nil))counter))
 
 (defun process (data)
   (format nil "Result~@[ ~A~]!"(sanity-check 1)))
