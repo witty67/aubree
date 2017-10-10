@@ -221,8 +221,10 @@
     (rename-file (car uploaded)
         (concatenate 'string "/tmp/"
 		     (setf *data* (cl-base64:string-to-base64-string (cadr uploaded)))))
+    ;;(read (open "epr.lqasm"))
     
-    (cl-simulator:process *data*))
+    (cl-simulator:process (concatenate 'string "/tmp/" *data*)))
+
     
 
 
